@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OptiNode — AI Vision for Industrial Teams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:           #05080d;
+      --bg-surface:   #151f32;
+      --bg-medium:    #182338;
+      --bg-light:     #1d273f;
+      --border:       #334670;
+      --primary:      #3793ff;
+      --primary-t:    rgba(55,147,255,.1);
+      --primary-h:    #38a4ff;
+      --secondary:    #2dd881;
+      --secondary-t:  rgba(45,216,129,.1);
+      --btn:          #334670;
+      --btn-hover:    #202c46;
+      --text-light:   #ebf1f7;
+      --text-medium:  #c6d3e2;
+      --text-dark:    #7a89a1;
+      --radius:       0.125rem;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      border: 0 solid var(--border);
+      scrollbar-width: none;
+      scrollbar-color: transparent transparent;
+    }
+    ::-webkit-scrollbar { display: none; }
+
+    html { line-height: 1.5; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text-light); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    img { display: block; }
+    h1,h2,h3,h4,h5 { margin: 0; }
+    p { margin: 0; }
+    ul, ol { margin: 0; padding: 0; list-style: none; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(5,8,13,.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: .375rem;
+      padding: .25rem .625rem;
+    }
+    .nav-logo img { height: 26px; display: block; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-medium);
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--text-light); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-login {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-medium);
+      transition: color .15s;
+    }
+    .nav-login:hover { color: var(--text-light); }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      padding: .5rem 1.125rem;
+      font-size: .875rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, transform .1s;
+      white-space: nowrap;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover { background: var(--primary-h); border-color: var(--primary-h); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-light);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.04); border-color: var(--text-dark); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding-top: 62px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% -5%, rgba(55,147,255,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 25% at 15% 50%, rgba(55,147,255,.06) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 30% at 80% 80%, rgba(45,216,129,.04) 0%, transparent 60%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .3rem .75rem;
+      background: var(--primary-t);
+      border: 1px solid rgba(55,147,255,.3);
+      border-radius: 100px;
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1.25rem;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: .35; }
+    }
+    .hero-title {
+      font-family: 'Lexend', 'Inter', sans-serif;
+      font-size: clamp(2.5rem, 4vw, 3.75rem);
+      font-weight: 700;
+      line-height: 1.07;
+      letter-spacing: -0.035em;
+      color: var(--text-light);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title .hl {
+      background: linear-gradient(130deg, var(--primary) 0%, #60b4ff 50%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 1.0625rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-medium);
+      max-width: 480px;
+      margin-bottom: 2rem;
+    }
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: .875rem;
+      flex-wrap: wrap;
+    }
+    .hero-ctas .btn { padding: .625rem 1.375rem; font-size: .9375rem; }
+    .hero-meta {
+      margin-top: 1.25rem;
+      font-size: .8125rem;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .hero-meta-check {
+      color: var(--secondary);
+      font-size: .875rem;
+    }
+
+    /* ─── HERO DASHBOARD ─── */
+    .hero-panel-wrap { position: relative; }
+    .hero-dashboard {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(55,147,255,.12),
+        0 0 60px rgba(55,147,255,.07),
+        0 32px 100px rgba(0,0,0,.75),
+        0 4px 16px rgba(0,0,0,.4);
+    }
+    .dash-top {
+      background: var(--bg-medium);
+      border-bottom: 1px solid var(--border);
+      padding: .625rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dash-dots { display: flex; gap: 5px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28c840; }
+    .dash-top-title {
+      font-size: .6875rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      font-family: monospace;
+      margin-left: .625rem;
+    }
+    .dash-live {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .6875rem;
+      font-weight: 600;
+      color: var(--secondary);
+      background: var(--secondary-t);
+      padding: .2rem .5rem;
+      border-radius: 100px;
+      border: 1px solid rgba(45,216,129,.25);
+    }
+    .dash-live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--secondary);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    .dash-layout {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+    }
+    .dash-sidebar {
+      border-right: 1px solid var(--border);
+      padding: .75rem 0;
+    }
+    .dash-sb-group {
+      padding: 0 .75rem;
+      margin-bottom: .375rem;
+    }
+    .dash-sb-label {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      margin-bottom: .375rem;
+      display: block;
+    }
+    .dash-sb-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .35rem .375rem;
+      border-radius: .25rem;
+      cursor: default;
+      transition: background .1s;
+    }
+    .dash-sb-item:hover { background: rgba(255,255,255,.03); }
+    .dash-sb-item.active-item { background: var(--primary-t); }
+    .dash-sb-left { display: flex; align-items: center; gap: .45rem; }
+    .sb-ind { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .c-green { background: var(--secondary); }
+    .c-blue { background: var(--primary); }
+    .c-yellow { background: #f0c040; }
+    .c-red { background: #ff5f57; }
+    .sb-name { font-size: .6875rem; color: var(--text-medium); font-family: monospace; }
+    .sb-val { font-size: .625rem; color: var(--text-dark); font-family: monospace; }
+
+    .dash-main-area {
+      padding: .75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .625rem;
+    }
+    .dash-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .5rem;
+    }
+    .dash-metric {
+      background: var(--bg-medium);
+      border: 1px solid var(--border);
+      border-radius: .25rem;
+      padding: .5rem .625rem;
+    }
+    .dash-metric-label {
+      font-size: .5625rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      margin-bottom: .2rem;
+    }
+    .dash-metric-val {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-light);
+      font-family: monospace;
+      line-height: 1.1;
+    }
+    .dash-metric-val.ok { color: var(--secondary); }
+    .dash-metric-val.info { color: var(--primary); }
+    .dash-metric-sub {
+      font-size: .5625rem;
+      color: var(--text-dark);
+      margin-top: .15rem;
+    }
+    .dash-chart-wrap {
+      background: var(--bg-medium);
+      border: 1px solid var(--border);
+      border-radius: .25rem;
+      padding: .5rem .625rem;
+      flex: 1;
+    }
+    .dash-chart-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .5rem;
+    }
+    .dash-chart-hd-title {
+      font-size: .625rem;
+      font-weight: 600;
+      color: var(--text-medium);
+    }
+    .dash-chart-legend {
+      display: flex;
+      gap: .625rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .5625rem;
+      color: var(--text-dark);
+    }
+    .legend-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .dash-events {
+      display: flex;
+      flex-direction: column;
+      gap: .375rem;
+    }
+    .dash-event {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .35rem .5rem;
+      background: var(--bg-medium);
+      border: 1px solid var(--border);
+      border-radius: .25rem;
+      border-left: 2px solid var(--secondary);
+    }
+    .dash-event.warn { border-left-color: #f0c040; }
+    .dash-event.info-e { border-left-color: var(--primary); }
+    .ev-msg {
+      font-size: .625rem;
+      color: var(--text-medium);
+      font-family: monospace;
+      flex: 1;
+    }
+    .ev-time {
+      font-size: .5625rem;
+      color: var(--text-dark);
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
+    /* ─── LOGO STRIP ─── */
+    .logo-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.375rem 0;
+      background: var(--bg-surface);
+    }
+    .logo-strip-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .strip-label {
+      font-size: .75rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+    .strip-logos {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .strip-logo {
+      font-size: .9375rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      opacity: .5;
+      letter-spacing: .01em;
+      transition: opacity .2s;
+    }
+    .strip-logo:hover { opacity: .85; }
+
+    /* ─── SECTIONS COMMON ─── */
+    .section { padding: 6rem 0; }
+    .section-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .section-tag {
+      display: block;
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: .625rem;
+    }
+    .section-h2 {
+      font-family: 'Lexend', 'Inter', sans-serif;
+      font-size: clamp(1.875rem, 3vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+    .section-lead {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text-medium);
+      max-width: 520px;
+    }
+
+    /* ─── AUTOPILOT SECTION ─── */
+    .autopilot-section {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .autopilot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4.5rem;
+      align-items: center;
+    }
+    .autopilot-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    .ap-feat {
+      display: flex;
+      gap: .875rem;
+    }
+    .ap-feat-icon {
+      width: 32px; height: 32px;
+      flex-shrink: 0;
+      border-radius: .375rem;
+      background: var(--primary-t);
+      border: 1px solid rgba(55,147,255,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .ap-feat-icon svg { width: 15px; height: 15px; color: var(--primary); }
+    .ap-feat-text h4 {
+      font-size: .9375rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: .25rem;
+    }
+    .ap-feat-text p {
+      font-size: .875rem;
+      line-height: 1.65;
+      color: var(--text-medium);
+    }
+    .ap-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .mini-panel {
+      background: var(--bg-medium);
+      border: 1px solid var(--border);
+      border-radius: .375rem;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4), 0 0 0 1px rgba(55,147,255,.04);
+    }
+    .mp-header {
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--border);
+      padding: .5rem .75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mp-header-left { display: flex; align-items: center; gap: .5rem; }
+    .mp-dots { display: flex; gap: 4px; }
+    .mp-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .mp-title {
+      font-size: .625rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      font-family: monospace;
+    }
+    .mp-badge {
+      font-size: .5625rem;
+      font-weight: 600;
+      color: var(--secondary);
+      background: var(--secondary-t);
+      padding: .15rem .4rem;
+      border-radius: 100px;
+      border: 1px solid rgba(45,216,129,.2);
+    }
+    .mp-body { padding: .75rem; }
+    .code-line {
+      font-family: monospace;
+      font-size: .6875rem;
+      line-height: 1.6;
+      color: var(--text-medium);
+    }
+    .code-line .kw { color: var(--primary); }
+    .code-line .str { color: var(--secondary); }
+    .code-line .cmt { color: var(--text-dark); }
+    .code-line .num { color: #f0c040; }
+
+    .mp-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .4rem;
+    }
+    .mp-metric {
+      text-align: center;
+      padding: .5rem .375rem;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: .25rem;
+    }
+    .mp-metric-val {
+      font-size: .9375rem;
+      font-weight: 700;
+      color: var(--text-light);
+      font-family: monospace;
+      line-height: 1.1;
+    }
+    .mp-metric-val.g { color: var(--secondary); }
+    .mp-metric-lbl {
+      font-size: .5rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-dark);
+      margin-top: .2rem;
+    }
+
+    /* ─── STATS ─── */
+    .stats-section {
+      padding: 5rem 0;
+      background: var(--bg);
+    }
+    .stats-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .stats-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: .375rem;
+      overflow: hidden;
+      background: var(--border);
+      gap: 1px;
+    }
+    .stat-item {
+      background: var(--bg-surface);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Lexend', 'Inter', sans-serif;
+      font-size: clamp(2.75rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text-light);
+      letter-spacing: -0.04em;
+      margin-bottom: .5rem;
+    }
+    .stat-num .su { font-size: .55em; color: var(--primary); }
+    .stat-lbl {
+      font-size: .9375rem;
+      font-weight: 500;
+      color: var(--text-medium);
+    }
+    .stat-sub {
+      font-size: .8125rem;
+      color: var(--text-dark);
+      margin-top: .375rem;
+    }
+
+    /* ─── PLATFORM TABS ─── */
+    .platform-section {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .platform-head { margin-bottom: 2.5rem; }
+    .tab-bar {
+      display: flex;
+      background: var(--bg-medium);
+      border: 1px solid var(--border);
+      border-radius: .25rem;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: .625rem 1rem;
+      font-size: .8125rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      background: transparent;
+      border: none;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      transition: all .15s;
+      text-align: center;
+    }
+    .tab-btn:last-child { border-right: none; }
+    .tab-btn:hover { color: var(--text-medium); }
+    .tab-btn.active {
+      color: var(--text-light);
+      background: var(--bg-light);
+    }
+    .platform-content {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .platform-feat-list {
+      display: flex;
+      flex-direction: column;
+      gap: .375rem;
+    }
+    .plat-feat {
+      display: flex;
+      align-items: flex-start;
+      gap: .625rem;
+      padding: .75rem .875rem;
+      border-radius: .25rem;
+      border: 1px solid transparent;
+      transition: all .15s;
+    }
+    .plat-feat.active {
+      background: var(--primary-t);
+      border-color: rgba(55,147,255,.2);
+    }
+    .plat-feat-check {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      color: var(--secondary);
+      margin-top: 2px;
+    }
+    .plat-feat-body strong {
+      display: block;
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: .2rem;
+    }
+    .plat-feat-body span {
+      font-size: .8125rem;
+      line-height: 1.5;
+      color: var(--text-medium);
+    }
+    /* Platform panel */
+    .plat-panel {
+      background: var(--bg-medium);
+      border: 1px solid var(--border);
+      border-radius: .375rem;
+      overflow: hidden;
+    }
+    .plat-panel-header {
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--border);
+      padding: .625rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .plat-panel-title {
+      font-size: .6875rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      font-family: monospace;
+    }
+    .plat-panel-body { padding: 1.25rem; }
+    .plat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .75rem;
+    }
+    .plat-table th {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      padding: .375rem .5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .plat-table td {
+      padding: .5rem .5rem;
+      font-family: monospace;
+      color: var(--text-medium);
+      border-bottom: 1px solid rgba(51,70,112,.4);
+    }
+    .plat-table tr:last-child td { border-bottom: none; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      padding: .175rem .5rem;
+      border-radius: 100px;
+      font-size: .5625rem;
+      font-weight: 600;
+    }
+    .status-ok { background: var(--secondary-t); color: var(--secondary); border: 1px solid rgba(45,216,129,.2); }
+    .status-warn { background: rgba(240,192,64,.1); color: #f0c040; border: 1px solid rgba(240,192,64,.2); }
+    .status-err { background: rgba(255,95,87,.1); color: #ff5f57; border: 1px solid rgba(255,95,87,.2); }
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* ─── PRICING ─── */
+    .pricing-section {
+      padding: 6rem 0;
+      background: var(--bg);
+    }
+    .pricing-head {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: .375rem;
+      overflow: hidden;
+    }
+    .pricing-card {
+      background: var(--bg-surface);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: background .2s;
+    }
+    .pricing-card:hover { background: var(--bg-medium); }
+    .pricing-card.featured { background: var(--bg-medium); }
+    .pricing-card.featured:hover { background: var(--bg-light); }
+    .pricing-tier {
+      font-size: .625rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-dark);
+    }
+    .pricing-amount {
+      font-family: 'Lexend', 'Inter', sans-serif;
+      font-size: 3.25rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--text-light);
+    }
+    .pricing-amount .period {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-dark);
+      letter-spacing: 0;
+    }
+    .pricing-amount.custom {
+      font-size: 2.25rem;
+    }
+    .pricing-desc {
+      font-size: .875rem;
+      line-height: 1.65;
+      color: var(--text-medium);
+    }
+    .pricing-divider {
+      height: 1px;
+      background: var(--border);
+    }
+    .pricing-feats {
+      display: flex;
+      flex-direction: column;
+      gap: .625rem;
+      flex: 1;
+    }
+    .p-feat {
+      display: flex;
+      align-items: center;
+      gap: .625rem;
+      font-size: .875rem;
+      color: var(--text-medium);
+    }
+    .p-feat-check {
+      width: 15px; height: 15px;
+      flex-shrink: 0;
+      color: var(--secondary);
+    }
+    .p-feat-x {
+      width: 15px; height: 15px;
+      flex-shrink: 0;
+      color: var(--text-dark);
+    }
+    .p-feat.dimmed { color: var(--text-dark); }
+    .btn-full {
+      width: 100%;
+      padding: .625rem;
+      font-size: .9375rem;
+      font-weight: 600;
+      text-align: center;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all .15s;
+      border: 1px solid transparent;
+    }
+    .btn-full-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-full-primary:hover { background: var(--primary-h); border-color: var(--primary-h); }
+    .btn-full-ghost {
+      background: transparent;
+      color: var(--text-light);
+      border-color: var(--border);
+    }
+    .btn-full-ghost:hover { background: rgba(255,255,255,.04); }
+    .pricing-note {
+      font-size: .75rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-section {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 0;
+    }
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .faq-left .section-lead { max-width: none; }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.125rem 0;
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-size: .9375rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      gap: 1rem;
+      transition: color .15s;
+    }
+    .faq-q:hover { color: var(--text-light); }
+    .faq-ico {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      color: var(--text-dark);
+      transition: transform .25s ease;
+    }
+    .faq-item.open .faq-ico { transform: rotate(45deg); }
+    .faq-a {
+      display: none;
+      padding-bottom: 1.125rem;
+      font-size: .9375rem;
+      line-height: 1.75;
+      color: var(--text-medium);
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 4rem 0 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .footer-brand img { height: 26px; margin-bottom: 1rem; background: rgba(255,255,255,0.06); border-radius:.25rem; padding: .2rem .5rem; }
+    .footer-brand p {
+      font-size: .875rem;
+      line-height: 1.7;
+      color: var(--text-dark);
+      max-width: 240px;
+      margin-bottom: 1.25rem;
+    }
+    .footer-socials { display: flex; gap: .5rem; }
+    .footer-social {
+      width: 30px; height: 30px;
+      border: 1px solid var(--border);
+      border-radius: .25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dark);
+      font-size: .75rem;
+      font-weight: 700;
+      transition: all .15s;
+    }
+    .footer-social:hover {
+      border-color: var(--primary);
+      color: var(--text-medium);
+    }
+    .footer-col h5 {
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-medium);
+      margin-bottom: .875rem;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: .5rem; }
+    .footer-col a {
+      font-size: .875rem;
+      color: var(--text-dark);
+      transition: color .15s;
+    }
+    .footer-col a:hover { color: var(--text-medium); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .footer-copy { font-size: .8125rem; color: var(--text-dark); }
+    .footer-legal {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-legal a {
+      font-size: .8125rem;
+      color: var(--text-dark);
+      transition: color .15s;
+    }
+    .footer-legal a:hover { color: var(--text-medium); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-panel-wrap { display: none; }
+      .autopilot-grid { grid-template-columns: 1fr; }
+      .platform-content { grid-template-columns: 1fr; }
+      .faq-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .tab-bar { flex-wrap: wrap; }
+      .tab-btn { flex: 1 1 50%; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="brand_assets/OptiNode_Logo.png" alt="OptiNode" />
+    </a>
+    <div class="nav-links">
+      <a href="#autopilot">Product</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#platform">Docs</a>
+      <a href="#faq">Blog</a>
+      <a href="#faq">Changelog</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="nav-login">Login</a>
+      <a href="#" class="btn btn-primary">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+
+    <!-- Left text -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        v2.0 — Real-time Edge Processing
+      </div>
+      <h1 class="hero-title">
+        AI Vision For Teams<br/>
+        in <span class="hl">Manufacturing</span>
+      </h1>
+      <p class="hero-subtitle">
+        OptiNode is the AI-native vision platform built for manufacturing teams. Detect defects, monitor processes, and act in real time — without the operational overhead.
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Get Started for Free</a>
+        <a href="#" class="btn btn-ghost">Book a Demo →</a>
+      </div>
+      <div class="hero-meta">
+        <span class="hero-meta-check">✓</span> No credit card required &nbsp;·&nbsp;
+        <span class="hero-meta-check">✓</span> Deploy in minutes
+      </div>
+    </div>
+
+    <!-- Right: Dashboard panel -->
+    <div class="hero-panel-wrap">
+      <div class="hero-dashboard">
+        <!-- Header bar -->
+        <div class="dash-top">
+          <div style="display:flex;align-items:center;gap:.625rem;">
+            <div class="dash-dots">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+            </div>
+            <span class="dash-top-title">optinode://production/dashboard</span>
+          </div>
+          <div class="dash-live"><span class="dash-live-dot"></span> Live</div>
+        </div>
+
+        <!-- Body -->
+        <div class="dash-layout">
+          <!-- Sidebar -->
+          <div class="dash-sidebar">
+            <div class="dash-sb-group">
+              <span class="dash-sb-label">Production Lines</span>
+              <div class="dash-sb-item active-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-green"></div>
+                  <span class="sb-name">line-01</span>
+                </div>
+                <span class="sb-val">99.9%</span>
+              </div>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-green"></div>
+                  <span class="sb-name">line-02</span>
+                </div>
+                <span class="sb-val">99.7%</span>
+              </div>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-yellow"></div>
+                  <span class="sb-name">line-03</span>
+                </div>
+                <span class="sb-val">97.2%</span>
+              </div>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-green"></div>
+                  <span class="sb-name">line-04</span>
+                </div>
+                <span class="sb-val">99.8%</span>
+              </div>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-blue"></div>
+                  <span class="sb-name">line-05</span>
+                </div>
+                <span class="sb-val">calibrating</span>
+              </div>
+            </div>
+            <div class="dash-sb-group" style="margin-top:.5rem;">
+              <span class="dash-sb-label">Cameras</span>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-green"></div>
+                  <span class="sb-name">cam-01a</span>
+                </div>
+                <span class="sb-val">active</span>
+              </div>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-green"></div>
+                  <span class="sb-name">cam-01b</span>
+                </div>
+                <span class="sb-val">active</span>
+              </div>
+              <div class="dash-sb-item">
+                <div class="dash-sb-left">
+                  <div class="sb-ind c-red"></div>
+                  <span class="sb-name">cam-03a</span>
+                </div>
+                <span class="sb-val">timeout</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main area -->
+          <div class="dash-main-area">
+            <!-- Metrics row -->
+            <div class="dash-metrics">
+              <div class="dash-metric">
+                <div class="dash-metric-label">Throughput</div>
+                <div class="dash-metric-val ok">847<span style="font-size:.65em;margin-left:2px;">ppm</span></div>
+                <div class="dash-metric-sub">↑ 3.2% vs yesterday</div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-label">Accuracy</div>
+                <div class="dash-metric-val ok">99.8<span style="font-size:.65em;margin-left:1px;">%</span></div>
+                <div class="dash-metric-sub">last 1000 frames</div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-label">Latency</div>
+                <div class="dash-metric-val info">4.2<span style="font-size:.65em;margin-left:1px;">ms</span></div>
+                <div class="dash-metric-sub">p99 end-to-end</div>
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="dash-chart-wrap">
+              <div class="dash-chart-hd">
+                <span class="dash-chart-hd-title">Throughput — Last 24h</span>
+                <div class="dash-chart-legend">
+                  <div class="legend-item">
+                    <div class="legend-dot" style="background:var(--primary);"></div>
+                    Line 01
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-dot" style="background:var(--secondary);"></div>
+                    Line 02
+                  </div>
+                </div>
+              </div>
+              <svg width="100%" height="80" viewBox="0 0 440 80" preserveAspectRatio="none" style="display:block;">
+                <defs>
+                  <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="rgba(55,147,255,.3)"/>
+                    <stop offset="100%" stop-color="rgba(55,147,255,0)"/>
+                  </linearGradient>
+                  <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="rgba(45,216,129,.25)"/>
+                    <stop offset="100%" stop-color="rgba(45,216,129,0)"/>
+                  </linearGradient>
+                </defs>
+                <!-- Grid lines -->
+                <line x1="0" y1="20" x2="440" y2="20" stroke="rgba(51,70,112,.35)" stroke-width="1"/>
+                <line x1="0" y1="40" x2="440" y2="40" stroke="rgba(51,70,112,.35)" stroke-width="1"/>
+                <line x1="0" y1="60" x2="440" y2="60" stroke="rgba(51,70,112,.35)" stroke-width="1"/>
+                <!-- Area 1 -->
+                <path d="M0,52 C30,48 60,42 100,38 C140,34 170,36 210,32 C250,28 290,24 330,22 C360,20 400,17 440,15 L440,80 L0,80 Z" fill="url(#g1)"/>
+                <path d="M0,52 C30,48 60,42 100,38 C140,34 170,36 210,32 C250,28 290,24 330,22 C360,20 400,17 440,15" fill="none" stroke="rgba(55,147,255,.85)" stroke-width="1.5"/>
+                <!-- Area 2 -->
+                <path d="M0,58 C30,55 60,50 100,47 C140,44 170,46 210,43 C250,40 290,36 330,33 C360,30 400,28 440,26 L440,80 L0,80 Z" fill="url(#g2)"/>
+                <path d="M0,58 C30,55 60,50 100,47 C140,44 170,46 210,43 C250,40 290,36 330,33 C360,30 400,28 440,26" fill="none" stroke="rgba(45,216,129,.7)" stroke-width="1.5"/>
+                <!-- Tooltip dot -->
+                <circle cx="330" cy="22" r="3" fill="var(--primary)"/>
+                <circle cx="330" cy="33" r="3" fill="var(--secondary)"/>
+              </svg>
+            </div>
+
+            <!-- Events -->
+            <div class="dash-events">
+              <div class="dash-event">
+                <span class="ev-msg">✓ line-01 defect inspection passed — 1247 units OK</span>
+                <span class="ev-time">2s ago</span>
+              </div>
+              <div class="dash-event warn">
+                <span class="ev-msg">⚠ cam-03a response timeout — failover activated</span>
+                <span class="ev-time">38s ago</span>
+              </div>
+              <div class="dash-event info-e">
+                <span class="ev-msg">→ AI model retrained — accuracy improved +0.3%</span>
+                <span class="ev-time">4m ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LOGO STRIP ══════════════ -->
+<div class="logo-strip">
+  <div class="logo-strip-inner">
+    <span class="strip-label">Integrated with</span>
+    <div class="strip-logos">
+      <span class="strip-logo">Siemens</span>
+      <span class="strip-logo">ABB</span>
+      <span class="strip-logo">Rockwell</span>
+      <span class="strip-logo">Bosch</span>
+      <span class="strip-logo">Cognex</span>
+      <span class="strip-logo">FANUC</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ AUTOPILOT SECTION ══════════════ -->
+<section class="section autopilot-section" id="autopilot">
+  <div class="section-inner">
+    <div class="autopilot-grid">
+
+      <!-- Left: text + features -->
+      <div>
+        <span class="section-tag">AI-Powered</span>
+        <h2 class="section-h2">Observability on Autopilot</h2>
+        <p class="section-lead">
+          OptiNode continuously monitors every production line, camera feed, and model inference — surfacing anomalies before they become defects, and routing decisions without human delay.
+        </p>
+        <div class="autopilot-features">
+          <div class="ap-feat">
+            <div class="ap-feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+              </svg>
+            </div>
+            <div class="ap-feat-text">
+              <h4>Always-On Defect Detection</h4>
+              <p>Sub-5ms inference on every frame. No sampling, no blind spots — every unit inspected, every defect caught.</p>
+            </div>
+          </div>
+          <div class="ap-feat">
+            <div class="ap-feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="ap-feat-text">
+              <h4>Self-Healing Pipelines</h4>
+              <p>Camera failures, network drops, and model drift are detected and resolved automatically — keeping uptime above 99.9%.</p>
+            </div>
+          </div>
+          <div class="ap-feat">
+            <div class="ap-feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </div>
+            <div class="ap-feat-text">
+              <h4>Continuous Model Improvement</h4>
+              <p>Every inspection event feeds back into the model registry. Accuracy compounds week over week — automatically.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: panels -->
+      <div class="ap-panels">
+
+        <!-- Panel 1: Code/config panel -->
+        <div class="mini-panel">
+          <div class="mp-header">
+            <div class="mp-header-left">
+              <div class="mp-dots">
+                <div class="mp-dot dot-r"></div>
+                <div class="mp-dot dot-y"></div>
+                <div class="mp-dot dot-g"></div>
+              </div>
+              <span class="mp-title">pipeline.yaml — line-01</span>
+            </div>
+            <span class="mp-badge">● running</span>
+          </div>
+          <div class="mp-body">
+            <div class="code-line"><span class="kw">pipeline</span>:</div>
+            <div class="code-line">&nbsp;&nbsp;<span class="kw">name</span>: <span class="str">"line-01-inspection"</span></div>
+            <div class="code-line">&nbsp;&nbsp;<span class="kw">model</span>: <span class="str">"optinode/defect-v4.2"</span></div>
+            <div class="code-line">&nbsp;&nbsp;<span class="kw">threshold</span>: <span class="num">0.94</span></div>
+            <div class="code-line">&nbsp;&nbsp;<span class="kw">cameras</span>: [<span class="str">"cam-01a"</span>, <span class="str">"cam-01b"</span>]</div>
+            <div class="code-line">&nbsp;&nbsp;<span class="kw">actions</span>:</div>
+            <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;- <span class="kw">on_defect</span>: <span class="str">"reject_divert"</span></div>
+            <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;- <span class="kw">on_alert</span>: <span class="str">"notify_slack"</span></div>
+            <div class="code-line"><span class="cmt"># last updated 2 mins ago · auto-deployed</span></div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Metrics panel -->
+        <div class="mini-panel">
+          <div class="mp-header">
+            <div class="mp-header-left">
+              <div class="mp-dots">
+                <div class="mp-dot dot-r"></div>
+                <div class="mp-dot dot-y"></div>
+                <div class="mp-dot dot-g"></div>
+              </div>
+              <span class="mp-title">model-metrics — last 1h</span>
+            </div>
+            <span class="mp-badge">✓ healthy</span>
+          </div>
+          <div class="mp-body">
+            <div class="mp-metrics">
+              <div class="mp-metric">
+                <div class="mp-metric-val g">99.8%</div>
+                <div class="mp-metric-lbl">Accuracy</div>
+              </div>
+              <div class="mp-metric">
+                <div class="mp-metric-val">4.1ms</div>
+                <div class="mp-metric-lbl">Latency</div>
+              </div>
+              <div class="mp-metric">
+                <div class="mp-metric-val">847</div>
+                <div class="mp-metric-lbl">ppm</div>
+              </div>
+              <div class="mp-metric">
+                <div class="mp-metric-val g">0</div>
+                <div class="mp-metric-lbl">Misses</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<section class="stats-section" id="scale">
+  <div class="stats-inner">
+    <div class="stats-header">
+      <span class="section-tag" style="justify-content:center;display:block;">Built For Scale</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">62<span class="su"> PB</span></div>
+        <div class="stat-lbl">Data Processed</div>
+        <div class="stat-sub">across all deployments</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5857<span class="su">+</span></div>
+        <div class="stat-lbl">Production Lines</div>
+        <div class="stat-sub">monitored globally</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3784<span class="su">+</span></div>
+        <div class="stat-lbl">Models Deployed</div>
+        <div class="stat-sub">in active production</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PLATFORM TABS ══════════════ -->
+<section class="section platform-section" id="platform">
+  <div class="section-inner">
+    <div class="platform-head">
+      <span class="section-tag">Platform</span>
+      <h2 class="section-h2">Everything you need in one platform</h2>
+    </div>
+
+    <div class="tab-bar" id="tabBar">
+      <button class="tab-btn active" data-tab="detection">AI Detection</button>
+      <button class="tab-btn" data-tab="rca">Root Cause Analysis</button>
+      <button class="tab-btn" data-tab="monitoring">Process Monitoring</button>
+      <button class="tab-btn" data-tab="alerts">Alert Management</button>
+      <button class="tab-btn" data-tab="integrations">Integrations</button>
+    </div>
+
+    <div class="platform-content">
+      <!-- Feature list -->
+      <div class="platform-feat-list" id="featList">
+        <div class="plat-feat active">
+          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="plat-feat-body">
+            <strong>Real-time defect detection</strong>
+            <span>Sub-5ms inference on every camera frame with zero sampling loss.</span>
+          </div>
+        </div>
+        <div class="plat-feat">
+          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="plat-feat-body">
+            <strong>Multi-class classification</strong>
+            <span>Detect scratch, dent, contamination, mis-assembly and 50+ defect types out of the box.</span>
+          </div>
+        </div>
+        <div class="plat-feat">
+          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="plat-feat-body">
+            <strong>Confidence scoring &amp; tracing</strong>
+            <span>Every decision is logged with confidence metrics and full frame traceability.</span>
+          </div>
+        </div>
+        <div class="plat-feat">
+          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="plat-feat-body">
+            <strong>Automated model retraining</strong>
+            <span>Active learning pipeline continuously improves accuracy using production feedback.</span>
+          </div>
+        </div>
+        <div class="plat-feat">
+          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="plat-feat-body">
+            <strong>Edge &amp; cloud hybrid</strong>
+            <span>Process locally for latency, sync globally for analytics and model distribution.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel -->
+      <div class="plat-panel">
+        <div class="plat-panel-header">
+          <span class="plat-panel-title">optinode://detection/events — live stream</span>
+          <div class="dash-live"><span class="dash-live-dot"></span> Streaming</div>
+        </div>
+        <div class="plat-panel-body">
+          <table class="plat-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Line</th>
+                <th>Unit ID</th>
+                <th>Defect Type</th>
+                <th>Confidence</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>09:47:32</td>
+                <td>line-01</td>
+                <td>#UN-8842</td>
+                <td>—</td>
+                <td>99.9%</td>
+                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
+              </tr>
+              <tr>
+                <td>09:47:31</td>
+                <td>line-02</td>
+                <td>#UN-8841</td>
+                <td>scratch</td>
+                <td>97.2%</td>
+                <td><span class="status-pill status-err"><span class="status-dot"></span>Reject</span></td>
+              </tr>
+              <tr>
+                <td>09:47:30</td>
+                <td>line-01</td>
+                <td>#UN-8840</td>
+                <td>—</td>
+                <td>99.7%</td>
+                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
+              </tr>
+              <tr>
+                <td>09:47:29</td>
+                <td>line-04</td>
+                <td>#UN-8839</td>
+                <td>dent</td>
+                <td>94.1%</td>
+                <td><span class="status-pill status-warn"><span class="status-dot"></span>Review</span></td>
+              </tr>
+              <tr>
+                <td>09:47:28</td>
+                <td>line-01</td>
+                <td>#UN-8838</td>
+                <td>—</td>
+                <td>99.8%</td>
+                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
+              </tr>
+              <tr>
+                <td>09:47:27</td>
+                <td>line-02</td>
+                <td>#UN-8837</td>
+                <td>—</td>
+                <td>99.6%</td>
+                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PRICING ══════════════ -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="pricing-head">
+      <span class="section-tag" style="justify-content:center;display:block;">Pricing</span>
+      <h2 class="section-h2" style="text-align:center;">Simple Predictable Pricing</h2>
+      <p class="section-lead" style="text-align:center;margin:0 auto;max-width:480px;">
+        Start free, scale as you grow. No surprise fees, no per-seat lock-in.
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="pricing-card">
+        <div>
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-amount" style="margin-top:.625rem;">$0</div>
+        </div>
+        <p class="pricing-desc">For individuals and small teams getting started with AI-powered inspection.</p>
+        <div class="pricing-divider"></div>
+        <div class="pricing-feats">
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            1 production line
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Up to 3 cameras
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            100K inspections / month
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Community support
+          </div>
+          <div class="p-feat dimmed">
+            <svg class="p-feat-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Custom models
+          </div>
+          <div class="p-feat dimmed">
+            <svg class="p-feat-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            SLA / uptime guarantee
+          </div>
+        </div>
+        <div>
+          <button class="btn-full btn-full-ghost">Get Started Free</button>
+          <div class="pricing-note" style="margin-top:.75rem;">No credit card required</div>
+        </div>
+      </div>
+
+      <!-- TEAM -->
+      <div class="pricing-card featured">
+        <div>
+          <div class="pricing-tier" style="color:var(--primary);">Team</div>
+          <div class="pricing-amount" style="margin-top:.625rem;">$80<span class="period"> / mo</span></div>
+        </div>
+        <p class="pricing-desc">For growing operations teams that need reliability, advanced models, and support.</p>
+        <div class="pricing-divider"></div>
+        <div class="pricing-feats">
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Up to 5 production lines
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Unlimited cameras
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            5M inspections / month
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Custom defect models
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Priority email support
+          </div>
+          <div class="p-feat dimmed">
+            <svg class="p-feat-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Dedicated SLA
+          </div>
+        </div>
+        <div>
+          <button class="btn-full btn-full-primary">Start 14-day Trial</button>
+          <div class="pricing-note" style="margin-top:.75rem;">No credit card required</div>
+        </div>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="pricing-card">
+        <div>
+          <div class="pricing-tier">Enterprise</div>
+          <div class="pricing-amount custom" style="margin-top:.625rem;">Let's Talk</div>
+        </div>
+        <p class="pricing-desc">For large-scale operations with custom compliance, SLA, and dedicated engineering support.</p>
+        <div class="pricing-divider"></div>
+        <div class="pricing-feats">
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Unlimited lines &amp; cameras
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Unlimited inspections
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Dedicated ML engineering
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            99.9% uptime SLA
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            On-premise deployment
+          </div>
+          <div class="p-feat">
+            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            21 CFR Part 11 compliance
+          </div>
+        </div>
+        <div>
+          <button class="btn-full btn-full-ghost">Book a Demo</button>
+          <div class="pricing-note" style="margin-top:.75rem;">Response within 24 hours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FAQ ══════════════ -->
+<section class="faq-section" id="faq">
+  <div class="section-inner">
+    <div class="faq-layout">
+
+      <!-- Left -->
+      <div class="faq-left">
+        <span class="section-tag">FAQs</span>
+        <h2 class="section-h2">Questions?<br/>We have answers.</h2>
+        <p class="section-lead" style="max-width:none;margin-top:1rem;">
+          Can't find what you're looking for? <a href="#" style="color:var(--primary);">Talk to our team →</a>
+        </p>
+      </div>
+
+      <!-- Right: accordion -->
+      <div class="faq-list">
+
+        <div class="faq-item open">
+          <button class="faq-q">
+            How does OptiNode detect defects without pre-labelled training data?
+            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-a">
+            OptiNode ships with a library of 50+ pre-trained defect detection models covering common defect categories across industries. For edge cases, our active learning pipeline automatically selects and labels high-value samples from your production stream — so your model improves continuously without manual annotation effort.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            What cameras and hardware does OptiNode support?
+            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-a">
+            OptiNode is hardware-agnostic. We support GigE Vision, USB3 Vision, MIPI CSI-2, and most IP camera protocols via RTSP. Pre-validated integrations exist for Basler, IDS, Cognex, and Allied Vision cameras. The edge node runs on NVIDIA Jetson, standard x86 with GPU, or cloud VMs.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            How long does deployment take?
+            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-a">
+            Most customers are running their first inspection pipeline within 2–4 hours of signing up, using a pre-trained model. Full production deployment with custom model tuning typically takes 1–3 weeks, depending on the number of defect classes and available hardware.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Can OptiNode integrate with my existing SCADA, MES, or ERP?
+            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-a">
+            Yes. OptiNode exposes a REST API, MQTT broker, and OPC-UA server out of the box. Pre-built connectors exist for Siemens TIA Portal, Rockwell FactoryTalk, SAP MES, and most major SCADA platforms. Enterprise customers receive a dedicated integration engineer during onboarding.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            What data does OptiNode collect and where is it stored?
+            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-a">
+            By default, OptiNode processes video frames on your edge hardware and only sends metadata (defect class, confidence, timestamp, unit ID) to the cloud dashboard. Raw frames are never stored by default. Enterprise plans support fully air-gapped on-premise deployments where no data leaves your facility.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="brand_assets/OptiNode_Logo.png" alt="OptiNode" />
+        <p>AI-native machine vision for industrial teams. From Vision to Decision.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social">in</a>
+          <a href="#" class="footer-social">tw</a>
+          <a href="#" class="footer-social">gh</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#">AI Detection</a></li>
+          <li><a href="#">Root Cause Analysis</a></li>
+          <li><a href="#">Process Monitoring</a></li>
+          <li><a href="#">Alert Management</a></li>
+          <li><a href="#">Integrations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">Legal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 OptiNode Ltd. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ SCRIPTS ══════════════ -->
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Ensure logo fallback on dark bg
+  document.querySelectorAll('.nav-logo img, .footer-brand img').forEach(img => {
+    img.onerror = () => {
+      img.style.display = 'none';
+      const span = document.createElement('span');
+      span.textContent = 'OPTINODE';
+      span.style.cssText = 'font-family:Lexend,Inter,sans-serif;font-weight:700;font-size:1rem;letter-spacing:.05em;color:var(--text-light);';
+      img.parentElement.appendChild(span);
+    };
+  });
+</script>
+
+</body>
+</html>
