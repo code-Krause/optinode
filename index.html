@@ -1,1864 +1,632 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" class="scroll-smooth" style="scroll-padding-top: 120px;">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OptiNode — AI Vision for Industrial Teams</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTINODE | Innowacyjne Systemy Wizyjne AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
-  <style>
-    :root {
-      --bg:           #05080d;
-      --bg-surface:   #151f32;
-      --bg-medium:    #182338;
-      --bg-light:     #1d273f;
-      --border:       #334670;
-      --primary:      #3793ff;
-      --primary-t:    rgba(55,147,255,.1);
-      --primary-h:    #38a4ff;
-      --secondary:    #2dd881;
-      --secondary-t:  rgba(45,216,129,.1);
-      --btn:          #334670;
-      --btn-hover:    #202c46;
-      --text-light:   #ebf1f7;
-      --text-medium:  #c6d3e2;
-      --text-dark:    #7a89a1;
-      --radius:       0.125rem;
-    }
+    <!-- Inżynierska Typografia -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      border: 0 solid var(--border);
-      scrollbar-width: none;
-      scrollbar-color: transparent transparent;
-    }
-    ::-webkit-scrollbar { display: none; }
+    <style>
+        :root {
+            --bg-main: #e4e5e8;
+            --brand-navy: #0f172a;
+            --brand-blue: #3d85c6;
+            --accent-warm: #ff2a00;
+            --text-main: #111827;
+            --grid-color: rgba(29, 43, 79, 0.03);
+        }
 
-    html { line-height: 1.5; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-    body { margin: 0; background: var(--bg); color: var(--text-light); overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
-    button { font-family: inherit; cursor: pointer; }
-    img { display: block; }
-    h1,h2,h3,h4,h5 { margin: 0; }
-    p { margin: 0; }
-    ul, ol { margin: 0; padding: 0; list-style: none; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(5,8,13,.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: .375rem;
-      padding: .25rem .625rem;
-    }
-    .nav-logo img { height: 26px; display: block; }
+        .header-font { font-family: 'JetBrains Mono', monospace; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-    .nav-links a {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-medium);
-      transition: color .15s;
-    }
-    .nav-links a:hover { color: var(--text-light); }
+        .blueprint-grid {
+            position: fixed; inset: 0; pointer-events: none; z-index: -1;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .nav-login {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-medium);
-      transition: color .15s;
-    }
-    .nav-login:hover { color: var(--text-light); }
+        /* Typography sizing (+20%) */
+        h1 { font-family: 'JetBrains Mono', monospace; font-size: clamp(2.4rem, 5.5vw, 4.3rem); line-height: 1.1; font-weight: 800; text-transform: uppercase; letter-spacing: -0.04em; }
+        h2 { font-family: 'Inter', sans-serif; font-size: clamp(1.25rem, 2.2vw, 1.8rem); line-height: 1.4; font-weight: 600; color: #374151; }
+        h3 { font-family: 'JetBrains Mono', monospace; font-weight: 800; text-transform: uppercase; }
 
-    /* ─── BUTTONS ─── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .4rem;
-      padding: .5rem 1.125rem;
-      font-size: .875rem;
-      font-weight: 600;
-      border-radius: var(--radius);
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: background .15s, border-color .15s, transform .1s;
-      white-space: nowrap;
-    }
-    .btn:active { transform: translateY(1px); }
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-    .btn-primary:hover { background: var(--primary-h); border-color: var(--primary-h); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-light);
-      border-color: var(--border);
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,.04); border-color: var(--text-dark); }
+        .premium-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 12px;
+            padding: 2.2rem;
+            border: 1px solid rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px -10px rgba(0,0,0,0.05);
+        }
+        
+        .premium-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-blue);
+            box-shadow: 0 0 45px -5px rgba(61, 133, 198, 0.3);
+        }
 
-    /* ─── HERO ─── */
-    .hero {
-      padding-top: 62px;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-glow {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse 70% 60% at 50% -5%, rgba(55,147,255,.18) 0%, transparent 65%),
-        radial-gradient(ellipse 35% 25% at 15% 50%, rgba(55,147,255,.06) 0%, transparent 60%),
-        radial-gradient(ellipse 30% 30% at 80% 80%, rgba(45,216,129,.04) 0%, transparent 60%);
-    }
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 1280px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .3rem .75rem;
-      background: var(--primary-t);
-      border: 1px solid rgba(55,147,255,.3);
-      border-radius: 100px;
-      font-size: .75rem;
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 1.25rem;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-      animation: blink 2s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity: 1; } 50% { opacity: .35; }
-    }
-    .hero-title {
-      font-family: 'Lexend', 'Inter', sans-serif;
-      font-size: clamp(2.5rem, 4vw, 3.75rem);
-      font-weight: 700;
-      line-height: 1.07;
-      letter-spacing: -0.035em;
-      color: var(--text-light);
-      margin-bottom: 1.25rem;
-    }
-    .hero-title .hl {
-      background: linear-gradient(130deg, var(--primary) 0%, #60b4ff 50%, var(--secondary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-subtitle {
-      font-size: 1.0625rem;
-      font-weight: 400;
-      line-height: 1.7;
-      color: var(--text-medium);
-      max-width: 480px;
-      margin-bottom: 2rem;
-    }
-    .hero-ctas {
-      display: flex;
-      align-items: center;
-      gap: .875rem;
-      flex-wrap: wrap;
-    }
-    .hero-ctas .btn { padding: .625rem 1.375rem; font-size: .9375rem; }
-    .hero-meta {
-      margin-top: 1.25rem;
-      font-size: .8125rem;
-      color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-    }
-    .hero-meta-check {
-      color: var(--secondary);
-      font-size: .875rem;
-    }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--brand-navy);
+            color: white;
+            padding: 1.1rem 2.8rem;
+            border-radius: 4px;
+            font-size: 1.1rem; 
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            background: var(--brand-blue);
+            box-shadow: 0 10px 20px rgba(61, 133, 198, 0.2);
+        }
 
-    /* ─── HERO DASHBOARD ─── */
-    .hero-panel-wrap { position: relative; }
-    .hero-dashboard {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: .5rem;
-      overflow: hidden;
-      box-shadow:
-        0 0 0 1px rgba(55,147,255,.12),
-        0 0 60px rgba(55,147,255,.07),
-        0 32px 100px rgba(0,0,0,.75),
-        0 4px 16px rgba(0,0,0,.4);
-    }
-    .dash-top {
-      background: var(--bg-medium);
-      border-bottom: 1px solid var(--border);
-      padding: .625rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .dash-dots { display: flex; gap: 5px; }
-    .dot { width: 9px; height: 9px; border-radius: 50%; }
-    .dot-r { background: #ff5f57; }
-    .dot-y { background: #ffbd2e; }
-    .dot-g { background: #28c840; }
-    .dash-top-title {
-      font-size: .6875rem;
-      font-weight: 500;
-      color: var(--text-dark);
-      font-family: monospace;
-      margin-left: .625rem;
-    }
-    .dash-live {
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      font-size: .6875rem;
-      font-weight: 600;
-      color: var(--secondary);
-      background: var(--secondary-t);
-      padding: .2rem .5rem;
-      border-radius: 100px;
-      border: 1px solid rgba(45,216,129,.25);
-    }
-    .dash-live-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--secondary);
-      animation: blink 1.5s ease-in-out infinite;
-    }
+        .detection-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.1rem, 1.2vw, 1.25rem);
+            font-weight: 700;
+            color: rgba(17, 24, 39, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 1.1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+        }
+        .detection-label:hover { color: var(--brand-blue); padding-left: 0.5rem; }
+        .detection-label.active {
+            color: var(--brand-navy);
+            border-bottom-color: var(--brand-blue);
+            padding-left: 0.7rem;
+        }
 
-    .dash-layout {
-      display: grid;
-      grid-template-columns: 170px 1fr;
-    }
-    .dash-sidebar {
-      border-right: 1px solid var(--border);
-      padding: .75rem 0;
-    }
-    .dash-sb-group {
-      padding: 0 .75rem;
-      margin-bottom: .375rem;
-    }
-    .dash-sb-label {
-      font-size: .6rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-dark);
-      margin-bottom: .375rem;
-      display: block;
-    }
-    .dash-sb-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .35rem .375rem;
-      border-radius: .25rem;
-      cursor: default;
-      transition: background .1s;
-    }
-    .dash-sb-item:hover { background: rgba(255,255,255,.03); }
-    .dash-sb-item.active-item { background: var(--primary-t); }
-    .dash-sb-left { display: flex; align-items: center; gap: .45rem; }
-    .sb-ind { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .c-green { background: var(--secondary); }
-    .c-blue { background: var(--primary); }
-    .c-yellow { background: #f0c040; }
-    .c-red { background: #ff5f57; }
-    .sb-name { font-size: .6875rem; color: var(--text-medium); font-family: monospace; }
-    .sb-val { font-size: .625rem; color: var(--text-dark); font-family: monospace; }
+        /* --- FLOW SECTION --- */
+        #proces { background: #0a0a0a; color: white; position: relative; padding: 1rem 0; }
 
-    .dash-main-area {
-      padding: .75rem;
-      display: flex;
-      flex-direction: column;
-      gap: .625rem;
-    }
-    .dash-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: .5rem;
-    }
-    .dash-metric {
-      background: var(--bg-medium);
-      border: 1px solid var(--border);
-      border-radius: .25rem;
-      padding: .5rem .625rem;
-    }
-    .dash-metric-label {
-      font-size: .5625rem;
-      font-weight: 600;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-      color: var(--text-dark);
-      margin-bottom: .2rem;
-    }
-    .dash-metric-val {
-      font-size: 1.0625rem;
-      font-weight: 700;
-      color: var(--text-light);
-      font-family: monospace;
-      line-height: 1.1;
-    }
-    .dash-metric-val.ok { color: var(--secondary); }
-    .dash-metric-val.info { color: var(--primary); }
-    .dash-metric-sub {
-      font-size: .5625rem;
-      color: var(--text-dark);
-      margin-top: .15rem;
-    }
-    .dash-chart-wrap {
-      background: var(--bg-medium);
-      border: 1px solid var(--border);
-      border-radius: .25rem;
-      padding: .5rem .625rem;
-      flex: 1;
-    }
-    .dash-chart-hd {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: .5rem;
-    }
-    .dash-chart-hd-title {
-      font-size: .625rem;
-      font-weight: 600;
-      color: var(--text-medium);
-    }
-    .dash-chart-legend {
-      display: flex;
-      gap: .625rem;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      font-size: .5625rem;
-      color: var(--text-dark);
-    }
-    .legend-dot { width: 6px; height: 6px; border-radius: 50%; }
-    .dash-events {
-      display: flex;
-      flex-direction: column;
-      gap: .375rem;
-    }
-    .dash-event {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      padding: .35rem .5rem;
-      background: var(--bg-medium);
-      border: 1px solid var(--border);
-      border-radius: .25rem;
-      border-left: 2px solid var(--secondary);
-    }
-    .dash-event.warn { border-left-color: #f0c040; }
-    .dash-event.info-e { border-left-color: var(--primary); }
-    .ev-msg {
-      font-size: .625rem;
-      color: var(--text-medium);
-      font-family: monospace;
-      flex: 1;
-    }
-    .ev-time {
-      font-size: .5625rem;
-      color: var(--text-dark);
-      font-family: monospace;
-      white-space: nowrap;
-    }
+        .node-box {
+            background: rgba(255, 255, 255, 0.04); 
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 1.3rem;
+            border-radius: 12px;
+            position: absolute;
+            z-index: 50;
+            user-select: none;
+            cursor: grab;
+            width: 300px; 
+            max-width: 85vw;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    /* ─── LOGO STRIP ─── */
-    .logo-strip {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 1.375rem 0;
-      background: var(--bg-surface);
-    }
-    .logo-strip-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      flex-wrap: wrap;
-    }
-    .strip-label {
-      font-size: .75rem;
-      font-weight: 500;
-      color: var(--text-dark);
-      white-space: nowrap;
-    }
-    .strip-logos {
-      display: flex;
-      align-items: center;
-      gap: 2.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .strip-logo {
-      font-size: .9375rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      opacity: .5;
-      letter-spacing: .01em;
-      transition: opacity .2s;
-    }
-    .strip-logo:hover { opacity: .85; }
+        .flow-path { 
+            stroke: var(--brand-blue); 
+            stroke-width: 2.5; 
+            stroke-dasharray: 12, 6; 
+            fill: none; 
+            opacity: 0.7; 
+            animation: dash-flow 25s linear infinite;
+        }
 
-    /* ─── SECTIONS COMMON ─── */
-    .section { padding: 6rem 0; }
-    .section-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .section-tag {
-      display: block;
-      font-size: .6875rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: .625rem;
-    }
-    .section-h2 {
-      font-family: 'Lexend', 'Inter', sans-serif;
-      font-size: clamp(1.875rem, 3vw, 2.5rem);
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      color: var(--text-light);
-      margin-bottom: 1rem;
-    }
-    .section-lead {
-      font-size: 1rem;
-      line-height: 1.75;
-      color: var(--text-medium);
-      max-width: 520px;
-    }
+        @keyframes dash-flow {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
 
-    /* ─── AUTOPILOT SECTION ─── */
-    .autopilot-section {
-      background: var(--bg-surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .autopilot-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4.5rem;
-      align-items: center;
-    }
-    .autopilot-features {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      margin-top: 2rem;
-    }
-    .ap-feat {
-      display: flex;
-      gap: .875rem;
-    }
-    .ap-feat-icon {
-      width: 32px; height: 32px;
-      flex-shrink: 0;
-      border-radius: .375rem;
-      background: var(--primary-t);
-      border: 1px solid rgba(55,147,255,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2px;
-    }
-    .ap-feat-icon svg { width: 15px; height: 15px; color: var(--primary); }
-    .ap-feat-text h4 {
-      font-size: .9375rem;
-      font-weight: 600;
-      color: var(--text-light);
-      margin-bottom: .25rem;
-    }
-    .ap-feat-text p {
-      font-size: .875rem;
-      line-height: 1.65;
-      color: var(--text-medium);
-    }
-    .ap-panels {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .mini-panel {
-      background: var(--bg-medium);
-      border: 1px solid var(--border);
-      border-radius: .375rem;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,.4), 0 0 0 1px rgba(55,147,255,.04);
-    }
-    .mp-header {
-      background: var(--bg-light);
-      border-bottom: 1px solid var(--border);
-      padding: .5rem .75rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .mp-header-left { display: flex; align-items: center; gap: .5rem; }
-    .mp-dots { display: flex; gap: 4px; }
-    .mp-dot { width: 7px; height: 7px; border-radius: 50%; }
-    .mp-title {
-      font-size: .625rem;
-      font-weight: 500;
-      color: var(--text-dark);
-      font-family: monospace;
-    }
-    .mp-badge {
-      font-size: .5625rem;
-      font-weight: 600;
-      color: var(--secondary);
-      background: var(--secondary-t);
-      padding: .15rem .4rem;
-      border-radius: 100px;
-      border: 1px solid rgba(45,216,129,.2);
-    }
-    .mp-body { padding: .75rem; }
-    .code-line {
-      font-family: monospace;
-      font-size: .6875rem;
-      line-height: 1.6;
-      color: var(--text-medium);
-    }
-    .code-line .kw { color: var(--primary); }
-    .code-line .str { color: var(--secondary); }
-    .code-line .cmt { color: var(--text-dark); }
-    .code-line .num { color: #f0c040; }
+        .flow-packet { fill: #ffffff; filter: drop-shadow(0 0 12px var(--brand-blue)); }
 
-    .mp-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: .4rem;
-    }
-    .mp-metric {
-      text-align: center;
-      padding: .5rem .375rem;
-      background: var(--bg-light);
-      border: 1px solid var(--border);
-      border-radius: .25rem;
-    }
-    .mp-metric-val {
-      font-size: .9375rem;
-      font-weight: 700;
-      color: var(--text-light);
-      font-family: monospace;
-      line-height: 1.1;
-    }
-    .mp-metric-val.g { color: var(--secondary); }
-    .mp-metric-lbl {
-      font-size: .5rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text-dark);
-      margin-top: .2rem;
-    }
+        .anchor-dot { width: 10px; height: 10px; background: white; border: 2px solid var(--brand-blue); border-radius: 50%; position: absolute; z-index: 60; pointer-events: none; display: none; }
 
-    /* ─── STATS ─── */
-    .stats-section {
-      padding: 5rem 0;
-      background: var(--bg);
-    }
-    .stats-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .stats-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--border);
-      border-radius: .375rem;
-      overflow: hidden;
-      background: var(--border);
-      gap: 1px;
-    }
-    .stat-item {
-      background: var(--bg-surface);
-      padding: 3.5rem 2rem;
-      text-align: center;
-    }
-    .stat-num {
-      font-family: 'Lexend', 'Inter', sans-serif;
-      font-size: clamp(2.75rem, 5vw, 4rem);
-      font-weight: 700;
-      line-height: 1;
-      color: var(--text-light);
-      letter-spacing: -0.04em;
-      margin-bottom: .5rem;
-    }
-    .stat-num .su { font-size: .55em; color: var(--primary); }
-    .stat-lbl {
-      font-size: .9375rem;
-      font-weight: 500;
-      color: var(--text-medium);
-    }
-    .stat-sub {
-      font-size: .8125rem;
-      color: var(--text-dark);
-      margin-top: .375rem;
-    }
+        .content-row { padding: 3rem 1.5rem; }
 
-    /* ─── PLATFORM TABS ─── */
-    .platform-section {
-      background: var(--bg-surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .platform-head { margin-bottom: 2.5rem; }
-    .tab-bar {
-      display: flex;
-      background: var(--bg-medium);
-      border: 1px solid var(--border);
-      border-radius: .25rem;
-      overflow: hidden;
-      margin-bottom: 2.5rem;
-    }
-    .tab-btn {
-      flex: 1;
-      padding: .625rem 1rem;
-      font-size: .8125rem;
-      font-weight: 500;
-      color: var(--text-dark);
-      background: transparent;
-      border: none;
-      border-right: 1px solid var(--border);
-      cursor: pointer;
-      transition: all .15s;
-      text-align: center;
-    }
-    .tab-btn:last-child { border-right: none; }
-    .tab-btn:hover { color: var(--text-medium); }
-    .tab-btn.active {
-      color: var(--text-light);
-      background: var(--bg-light);
-    }
-    .platform-content {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-    .platform-feat-list {
-      display: flex;
-      flex-direction: column;
-      gap: .375rem;
-    }
-    .plat-feat {
-      display: flex;
-      align-items: flex-start;
-      gap: .625rem;
-      padding: .75rem .875rem;
-      border-radius: .25rem;
-      border: 1px solid transparent;
-      transition: all .15s;
-    }
-    .plat-feat.active {
-      background: var(--primary-t);
-      border-color: rgba(55,147,255,.2);
-    }
-    .plat-feat-check {
-      width: 16px; height: 16px;
-      flex-shrink: 0;
-      color: var(--secondary);
-      margin-top: 2px;
-    }
-    .plat-feat-body strong {
-      display: block;
-      font-size: .875rem;
-      font-weight: 600;
-      color: var(--text-light);
-      margin-bottom: .2rem;
-    }
-    .plat-feat-body span {
-      font-size: .8125rem;
-      line-height: 1.5;
-      color: var(--text-medium);
-    }
-    /* Platform panel */
-    .plat-panel {
-      background: var(--bg-medium);
-      border: 1px solid var(--border);
-      border-radius: .375rem;
-      overflow: hidden;
-    }
-    .plat-panel-header {
-      background: var(--bg-light);
-      border-bottom: 1px solid var(--border);
-      padding: .625rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .plat-panel-title {
-      font-size: .6875rem;
-      font-weight: 500;
-      color: var(--text-dark);
-      font-family: monospace;
-    }
-    .plat-panel-body { padding: 1.25rem; }
-    .plat-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .75rem;
-    }
-    .plat-table th {
-      font-size: .6rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-dark);
-      padding: .375rem .5rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .plat-table td {
-      padding: .5rem .5rem;
-      font-family: monospace;
-      color: var(--text-medium);
-      border-bottom: 1px solid rgba(51,70,112,.4);
-    }
-    .plat-table tr:last-child td { border-bottom: none; }
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      padding: .175rem .5rem;
-      border-radius: 100px;
-      font-size: .5625rem;
-      font-weight: 600;
-    }
-    .status-ok { background: var(--secondary-t); color: var(--secondary); border: 1px solid rgba(45,216,129,.2); }
-    .status-warn { background: rgba(240,192,64,.1); color: #f0c040; border: 1px solid rgba(240,192,64,.2); }
-    .status-err { background: rgba(255,95,87,.1); color: #ff5f57; border: 1px solid rgba(255,95,87,.2); }
-    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+        /* --- SYMULACJA HERO: ORYGINALNY STYL Z POPRAWKAMI --- */
+        #sim-container {
+            position: relative;
+            width: 100%;
+            height: 580px; 
+            background: #1e293b;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
 
-    /* ─── PRICING ─── */
-    .pricing-section {
-      padding: 6rem 0;
-      background: var(--bg);
-    }
-    .pricing-head {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: .375rem;
-      overflow: hidden;
-    }
-    .pricing-card {
-      background: var(--bg-surface);
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      transition: background .2s;
-    }
-    .pricing-card:hover { background: var(--bg-medium); }
-    .pricing-card.featured { background: var(--bg-medium); }
-    .pricing-card.featured:hover { background: var(--bg-light); }
-    .pricing-tier {
-      font-size: .625rem;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--text-dark);
-    }
-    .pricing-amount {
-      font-family: 'Lexend', 'Inter', sans-serif;
-      font-size: 3.25rem;
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      color: var(--text-light);
-    }
-    .pricing-amount .period {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--text-dark);
-      letter-spacing: 0;
-    }
-    .pricing-amount.custom {
-      font-size: 2.25rem;
-    }
-    .pricing-desc {
-      font-size: .875rem;
-      line-height: 1.65;
-      color: var(--text-medium);
-    }
-    .pricing-divider {
-      height: 1px;
-      background: var(--border);
-    }
-    .pricing-feats {
-      display: flex;
-      flex-direction: column;
-      gap: .625rem;
-      flex: 1;
-    }
-    .p-feat {
-      display: flex;
-      align-items: center;
-      gap: .625rem;
-      font-size: .875rem;
-      color: var(--text-medium);
-    }
-    .p-feat-check {
-      width: 15px; height: 15px;
-      flex-shrink: 0;
-      color: var(--secondary);
-    }
-    .p-feat-x {
-      width: 15px; height: 15px;
-      flex-shrink: 0;
-      color: var(--text-dark);
-    }
-    .p-feat.dimmed { color: var(--text-dark); }
-    .btn-full {
-      width: 100%;
-      padding: .625rem;
-      font-size: .9375rem;
-      font-weight: 600;
-      text-align: center;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: all .15s;
-      border: 1px solid transparent;
-    }
-    .btn-full-primary {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-    .btn-full-primary:hover { background: var(--primary-h); border-color: var(--primary-h); }
-    .btn-full-ghost {
-      background: transparent;
-      color: var(--text-light);
-      border-color: var(--border);
-    }
-    .btn-full-ghost:hover { background: rgba(255,255,255,.04); }
-    .pricing-note {
-      font-size: .75rem;
-      color: var(--text-dark);
-      text-align: center;
-    }
+        #hmi-panel {
+            position: absolute;
+            background: #f8f9fa;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            width: 210px;
+            z-index: 100;
+            top: 25px;
+            left: 25px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        #hmi-panel h5 { margin: 0 0 8px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; font-weight: bold; }
+        .hmi-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 12px; background: #ffffff; padding: 4px 8px; border-radius: 4px; border: 1px solid #e2e8f0; }
+        .hmi-label { color: #475569; font-weight: 600; }
+        .hmi-val-total { color: #0284c7; font-weight: bold; font-size: 14px; }
+        .hmi-val-good { color: #16a34a; font-weight: bold; font-size: 14px; }
+        .hmi-val-bad { color: #dc2626; font-weight: bold; font-size: 14px; }
 
-    /* ─── FAQ ─── */
-    .faq-section {
-      background: var(--bg-surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 6rem 0;
-    }
-    .faq-layout {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 5rem;
-      align-items: start;
-    }
-    .faq-left .section-lead { max-width: none; }
-    .faq-list { display: flex; flex-direction: column; }
-    .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-item:first-child { border-top: 1px solid var(--border); }
-    .faq-q {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.125rem 0;
-      background: transparent;
-      border: none;
-      color: var(--text-light);
-      font-size: .9375rem;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-      gap: 1rem;
-      transition: color .15s;
-    }
-    .faq-q:hover { color: var(--text-light); }
-    .faq-ico {
-      flex-shrink: 0;
-      width: 20px; height: 20px;
-      color: var(--text-dark);
-      transition: transform .25s ease;
-    }
-    .faq-item.open .faq-ico { transform: rotate(45deg); }
-    .faq-a {
-      display: none;
-      padding-bottom: 1.125rem;
-      font-size: .9375rem;
-      line-height: 1.75;
-      color: var(--text-medium);
-    }
-    .faq-item.open .faq-a { display: block; }
+        .form-input {
+            width: 100%; background: #f9fafb; border: 1px solid #e5e7eb; padding: 1.1rem; border-radius: 8px; outline: none; font-size: 1.1rem; transition: border-color 0.3s;
+        }
+        .form-input:focus { border-color: var(--brand-blue); }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 4rem 0 2rem;
-    }
-    .footer-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 1.8fr 1fr 1fr 1fr;
-      gap: 3rem;
-      padding-bottom: 3rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1.5rem;
-    }
-    .footer-brand img { height: 26px; margin-bottom: 1rem; background: rgba(255,255,255,0.06); border-radius:.25rem; padding: .2rem .5rem; }
-    .footer-brand p {
-      font-size: .875rem;
-      line-height: 1.7;
-      color: var(--text-dark);
-      max-width: 240px;
-      margin-bottom: 1.25rem;
-    }
-    .footer-socials { display: flex; gap: .5rem; }
-    .footer-social {
-      width: 30px; height: 30px;
-      border: 1px solid var(--border);
-      border-radius: .25rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-dark);
-      font-size: .75rem;
-      font-weight: 700;
-      transition: all .15s;
-    }
-    .footer-social:hover {
-      border-color: var(--primary);
-      color: var(--text-medium);
-    }
-    .footer-col h5 {
-      font-size: .6875rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-medium);
-      margin-bottom: .875rem;
-    }
-    .footer-col ul { display: flex; flex-direction: column; gap: .5rem; }
-    .footer-col a {
-      font-size: .875rem;
-      color: var(--text-dark);
-      transition: color .15s;
-    }
-    .footer-col a:hover { color: var(--text-medium); }
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .footer-copy { font-size: .8125rem; color: var(--text-dark); }
-    .footer-legal {
-      display: flex;
-      gap: 1.5rem;
-    }
-    .footer-legal a {
-      font-size: .8125rem;
-      color: var(--text-dark);
-      transition: color .15s;
-    }
-    .footer-legal a:hover { color: var(--text-medium); }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 1024px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-panel-wrap { display: none; }
-      .autopilot-grid { grid-template-columns: 1fr; }
-      .platform-content { grid-template-columns: 1fr; }
-      .faq-layout { grid-template-columns: 1fr; gap: 2rem; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; }
-      .tab-bar { flex-wrap: wrap; }
-      .tab-btn { flex: 1 1 50%; border-bottom: 1px solid var(--border); }
-    }
-  </style>
+        @keyframes scanning { 0% { top: 0%; } 100% { top: 100%; } }
+    </style>
 </head>
-<body>
+<body class="selection:bg-[#3d85c6] selection:text-white relative">
 
-<!-- ══════════════ NAV ══════════════ -->
-<nav>
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">
-      <img src="brand_assets/OptiNode_Logo.png" alt="OptiNode" />
-    </a>
-    <div class="nav-links">
-      <a href="#autopilot">Product</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#platform">Docs</a>
-      <a href="#faq">Blog</a>
-      <a href="#faq">Changelog</a>
-    </div>
-    <div class="nav-right">
-      <a href="#" class="nav-login">Login</a>
-      <a href="#" class="btn btn-primary">Sign Up</a>
-    </div>
-  </div>
-</nav>
+    <div class="blueprint-grid"></div>
 
-<!-- ══════════════ HERO ══════════════ -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-inner">
-
-    <!-- Left text -->
-    <div class="hero-left">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        v2.0 — Real-time Edge Processing
-      </div>
-      <h1 class="hero-title">
-        AI Vision For Teams<br/>
-        in <span class="hl">Manufacturing</span>
-      </h1>
-      <p class="hero-subtitle">
-        OptiNode is the AI-native vision platform built for manufacturing teams. Detect defects, monitor processes, and act in real time — without the operational overhead.
-      </p>
-      <div class="hero-ctas">
-        <a href="#" class="btn btn-primary">Get Started for Free</a>
-        <a href="#" class="btn btn-ghost">Book a Demo →</a>
-      </div>
-      <div class="hero-meta">
-        <span class="hero-meta-check">✓</span> No credit card required &nbsp;·&nbsp;
-        <span class="hero-meta-check">✓</span> Deploy in minutes
-      </div>
-    </div>
-
-    <!-- Right: Dashboard panel -->
-    <div class="hero-panel-wrap">
-      <div class="hero-dashboard">
-        <!-- Header bar -->
-        <div class="dash-top">
-          <div style="display:flex;align-items:center;gap:.625rem;">
-            <div class="dash-dots">
-              <div class="dot dot-r"></div>
-              <div class="dot dot-y"></div>
-              <div class="dot dot-g"></div>
+    <!-- Pasek Nawigacji -->
+    <nav class="fixed top-0 left-0 w-full p-4 lg:px-12 flex justify-between items-center z-[110] bg-[#e4e5e8]/95 backdrop-blur-md border-b border-white/60 shadow-lg" id="main-nav">
+        <a href="#" class="flex items-center gap-3 group">
+            <div class="w-11 h-11 bg-[#111827] rounded-lg flex items-center justify-center rotate-3 shadow-lg group-hover:rotate-0 transition-transform">
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3d85c6" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
             </div>
-            <span class="dash-top-title">optinode://production/dashboard</span>
-          </div>
-          <div class="dash-live"><span class="dash-live-dot"></span> Live</div>
+            <div class="flex flex-col">
+                <span class="header-font text-2xl font-bold leading-none text-[#111827]">OPTINODE</span>
+                <span class="mono-font text-[11px] uppercase tracking-wider text-gray-500 font-bold">Vision to Decision</span>
+            </div>
+        </a>
+        
+        <div class="hidden md:flex gap-10 mono-font text-[18px] uppercase font-black text-[#111827] tracking-wider">
+            <a href="#detekcja" class="hover:text-[#3d85c6] transition-colors">Detekcja</a>
+            <a href="#proces" class="hover:text-[#3d85c6] transition-colors">Proces</a>
+            <a href="#model" class="hover:text-[#3d85c6] transition-colors">Model</a>
         </div>
+        
+        <button class="bg-[#111827] text-white px-8 py-3 rounded-lg text-sm font-bold uppercase hover:bg-[#3d85c6] transition-all header-font shadow-md">Kontakt</button>
+    </nav>
 
-        <!-- Body -->
-        <div class="dash-layout">
-          <!-- Sidebar -->
-          <div class="dash-sidebar">
-            <div class="dash-sb-group">
-              <span class="dash-sb-label">Production Lines</span>
-              <div class="dash-sb-item active-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-green"></div>
-                  <span class="sb-name">line-01</span>
+    <!-- 1. Hero z Symulacją -->
+    <section class="relative min-h-[90vh] flex items-center pt-24 overflow-hidden" id="hero">
+        <canvas id="particles-canvas" class="absolute inset-0 pointer-events-none z-0 opacity-50"></canvas>
+        <div class="max-w-[1800px] mx-auto w-full relative z-10 px-6 lg:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+            
+            <div class="anim-fade-up md:col-span-6 lg:col-span-5">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded bg-white border border-gray-200 shadow-sm mb-6">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#ff2a00] animate-pulse"></span>
+                    <span class="mono-font text-[12px] font-black text-gray-950 uppercase tracking-widest">Neural Vision AI Core</span>
                 </div>
-                <span class="sb-val">99.9%</span>
-              </div>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-green"></div>
-                  <span class="sb-name">line-02</span>
+                
+                <h1>Innowacyjne Systemy <br> Wspomagane <span class="text-[#3d85c6]">AI</span></h1>
+                <h2 class="mt-6 mb-10 max-w-lg leading-snug">Wdrażamy inteligentne systemy wizyjne AI, które automatycznie optymalizują kontrolę jakości w Twoim zakładzie.</h2>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#kontakt" class="btn-primary shadow-xl">Inicjuj Audyt</a>
+                    <a href="#proces" class="px-8 py-4 rounded border-2 border-gray-300 text-gray-900 font-bold uppercase text-sm hover:bg-white transition-all header-font">Zobacz Flow</a>
                 </div>
-                <span class="sb-val">99.7%</span>
-              </div>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-yellow"></div>
-                  <span class="sb-name">line-03</span>
+            </div>
+
+            <!-- Panel Symulacji -->
+            <div class="md:col-span-6 lg:col-span-7 relative anim-slide-left flex justify-end">
+                <div id="sim-container" class="w-full">
+                    <div id="hmi-panel">
+                        <h5>System Wizyjny AI</h5>
+                        <div class="hmi-row"><span class="hmi-label">SUMA (Scan):</span><span class="hmi-val-total" id="count-total">0</span></div>
+                        <div class="hmi-row"><span class="hmi-label">OK (Pass):</span><span class="hmi-val-good" id="count-good">0</span></div>
+                        <div class="hmi-row"><span class="hmi-label">BŁĄD (Fail):</span><span class="hmi-val-bad" id="count-bad">0</span></div>
+                    </div>
+                    <canvas id="simulationCanvas"></canvas>
                 </div>
-                <span class="sb-val">97.2%</span>
-              </div>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-green"></div>
-                  <span class="sb-name">line-04</span>
+                <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-[#3d85c6]/10 blur-[120px] rounded-full z-[-1]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Możliwości Detekcji -->
+    <section class="content-row bg-white border-y border-gray-100" id="detekcja">
+        <div class="max-w-[1800px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16 items-start">
+                
+                <div class="md:col-span-4 anim-fade-up">
+                    <h3 class="mb-8 text-2xl text-black border-l-4 border-[#3d85c6] pl-5 header-font">Możliwości Detekcji</h3>
+                    <div class="flex flex-col space-y-0.5">
+                        <div class="detection-label active" data-id="qr">01. Kody QR i kreskowe</div>
+                        <div class="detection-label" data-id="ocr">02. Tekst OCR i daty</div>
+                        <div class="detection-label" data-id="shape">03. Kształt i geometria 2D</div>
+                        <div class="detection-label" data-id="3d">04. Pomiary 3D i objętość</div>
+                        <div class="detection-label" data-id="color">05. Weryfikacja barwy</div>
+                    </div>
                 </div>
-                <span class="sb-val">99.8%</span>
-              </div>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-blue"></div>
-                  <span class="sb-name">line-05</span>
+                
+                <div class="md:col-span-8 w-full h-[500px] bg-[#0a0a0a] rounded-2xl relative overflow-hidden anim-slide-left shadow-2xl flex items-center justify-center">
+                    <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 30px 30px;"></div>
+                    <div id="visualizer" class="z-10 text-center transition-all duration-500">
+                        <div class="mono-font text-[#3d85c6] text-sm mb-8 uppercase tracking-[0.5em] font-black opacity-80" id="v-label">> MODULE: QR_READY</div>
+                        <div class="w-64 h-64 border-2 border-white/5 rounded-3xl flex items-center justify-center relative bg-white/5 backdrop-blur-sm">
+                            <div class="w-44 h-44 bg-gradient-to-tr from-gray-900 to-brand-blue/30 rounded-3xl shadow-[0_0_80px_rgba(61,133,198,0.3)] flex items-center justify-center">
+                                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h10"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 left-0 w-full h-[2px] bg-[#3d85c6] shadow-[0_0_40px_#3d85c6] animate-[scanning_5s_ease-in-out_infinite]"></div>
                 </div>
-                <span class="sb-val">calibrating</span>
-              </div>
             </div>
-            <div class="dash-sb-group" style="margin-top:.5rem;">
-              <span class="dash-sb-label">Cameras</span>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-green"></div>
-                  <span class="sb-name">cam-01a</span>
+        </div>
+    </section>
+
+    <!-- 3. Przepływ Współpracy -->
+    <section class="py-16 bg-[#0a0a0a] relative overflow-hidden" id="proces">
+        <div class="max-w-[1800px] mx-auto px-6 w-full mt-6">
+            <div class="text-center mb-10">
+                <div class="mono-font text-[#3d85c6] text-[13px] uppercase tracking-widest font-black mb-1">Engineering Workflow</div>
+                <h3 class="text-white text-3xl md:text-5xl header-font">Przepływ Współpracy</h3>
+            </div>
+
+            <div class="relative w-full h-[850px] md:h-[480px] overflow-visible" id="proces-container">
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" id="flow-svg" style="overflow: visible;">
+                    <path id="path1" class="flow-path" />
+                    <path id="path2" class="flow-path" />
+                    <path id="path3" class="flow-path" />
+                    <circle r="7" class="flow-packet" id="packet1"><animateMotion dur="4s" repeatCount="indefinite" id="anim1" /></circle>
+                    <circle r="7" class="flow-packet" id="packet2"><animateMotion dur="5s" repeatCount="indefinite" id="anim2" /></circle>
+                    <circle r="7" class="flow-packet" id="packet3" fill="#ff2a00"><animateMotion dur="3.5s" repeatCount="indefinite" id="anim3" /></circle>
+                </svg>
+                <div id="dot1" class="anchor-dot"></div><div id="dot2" class="anchor-dot"></div><div id="dot3" class="anchor-dot"></div><div id="dot4" class="anchor-dot"></div><div id="dot5" class="anchor-dot"></div><div id="dot6" class="anchor-dot"></div>
+                <div class="node-box" id="node1"><h4 class="header-font text-xl mb-1 text-white font-bold">Analiza</h4><p class="text-[14px] text-gray-400">Audyt i specyfikacja techniczna wyzwania.</p></div>
+                <div class="node-box" id="node2"><h4 class="header-font text-xl mb-1 text-white font-bold">Koncepcja</h4><p class="text-[14px] text-gray-400">Architektura sieci AI i dobór optyki.</p></div>
+                <div class="node-box" id="node3"><h4 class="header-font text-xl mb-1 text-white font-bold">Weryfikacja</h4><p class="text-[14px] text-gray-400">Laboratoryjne testy PoC na detalach.</p></div>
+                <div class="node-box" id="node4"><h4 class="header-font text-xl mb-1 text-[#ff2a00] font-bold">Uruchomienie</h4><p class="text-[14px] text-gray-400">Instalacja i monitoring procesów.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Model OPEX -->
+    <section class="content-row bg-[#f3f4f6]" id="model">
+        <div class="max-w-[1800px] mx-auto px-6">
+            <div class="text-center mb-12">
+                <div class="text-[#3d85c6] mono-font font-black tracking-widest text-[13px] mb-3 uppercase">Optymalizacja ROI</div>
+                <h3 class="text-black text-3xl md:text-4xl header-font">Zalety Modelu OPEX</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+                <div class="premium-card anim-fade-up">
+                    <h4 class="header-font mb-5 border-b border-gray-100 pb-4 text-2xl text-[#0f172a] font-black uppercase">Wsparcie 24/7</h4>
+                    <p class="text-gray-600 font-medium leading-relaxed text-lg">Ciągła optymalizacja modeli sieci neuronowych w cenie subskrypcji oraz priorytetowy serwis inżynierski 24/7.</p>
                 </div>
-                <span class="sb-val">active</span>
-              </div>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-green"></div>
-                  <span class="sb-name">cam-01b</span>
+                <div class="premium-card anim-fade-up" style="transition-delay: 0.1s;">
+                    <h4 class="header-font mb-5 border-b border-gray-100 pb-4 text-2xl text-[#0f172a] font-black uppercase">Brak CAPEX</h4>
+                    <p class="text-gray-600 font-medium leading-relaxed text-lg">Wdrożenie zaawansowanych systemów wizyjnych bez wysokich kosztów inwestycyjnych na starcie.</p>
                 </div>
-                <span class="sb-val">active</span>
-              </div>
-              <div class="dash-sb-item">
-                <div class="dash-sb-left">
-                  <div class="sb-ind c-red"></div>
-                  <span class="sb-name">cam-03a</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Kontakt -->
+    <section class="content-row bg-[#e4e5e8]" id="kontakt">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-start">
+            
+            <div class="anim-fade-up">
+                <h3 class="mb-5 text-4xl text-black font-black uppercase header-font">Inicjuj Rozwiązanie</h3>
+                <p class="text-xl text-gray-700 font-bold mb-8 leading-relaxed max-w-md">Skonsultuj specyfikację techniczną swojej fabryki z naszymi inżynierami. Sprawdzimy wykonalność Twojego procesu w 48h.</p>
+                <div class="mono-font text-base font-black">
+                    <p class="flex items-center gap-4 hover:text-[#3d85c6] transition-colors cursor-pointer text-lg"><span class="w-3 h-3 bg-[#3d85c6] rounded-full shadow-[0_0_10px_#3d85c6]"></span> hello@optinode.ai</p>
                 </div>
-                <span class="sb-val">timeout</span>
-              </div>
             </div>
-          </div>
-
-          <!-- Main area -->
-          <div class="dash-main-area">
-            <!-- Metrics row -->
-            <div class="dash-metrics">
-              <div class="dash-metric">
-                <div class="dash-metric-label">Throughput</div>
-                <div class="dash-metric-val ok">847<span style="font-size:.65em;margin-left:2px;">ppm</span></div>
-                <div class="dash-metric-sub">↑ 3.2% vs yesterday</div>
-              </div>
-              <div class="dash-metric">
-                <div class="dash-metric-label">Accuracy</div>
-                <div class="dash-metric-val ok">99.8<span style="font-size:.65em;margin-left:1px;">%</span></div>
-                <div class="dash-metric-sub">last 1000 frames</div>
-              </div>
-              <div class="dash-metric">
-                <div class="dash-metric-label">Latency</div>
-                <div class="dash-metric-val info">4.2<span style="font-size:.65em;margin-left:1px;">ms</span></div>
-                <div class="dash-metric-sub">p99 end-to-end</div>
-              </div>
-            </div>
-
-            <!-- Chart -->
-            <div class="dash-chart-wrap">
-              <div class="dash-chart-hd">
-                <span class="dash-chart-hd-title">Throughput — Last 24h</span>
-                <div class="dash-chart-legend">
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background:var(--primary);"></div>
-                    Line 01
-                  </div>
-                  <div class="legend-item">
-                    <div class="legend-dot" style="background:var(--secondary);"></div>
-                    Line 02
-                  </div>
+            
+            <div class="bg-white rounded-2xl shadow-2xl p-8 lg:p-10 border-t-8 border-[#0f172a] anim-slide-left">
+                <div class="mb-6">
+                    <h4 class="header-font text-xl text-[#0f172a] font-black uppercase">Formularz Zapytania</h4>
                 </div>
-              </div>
-              <svg width="100%" height="80" viewBox="0 0 440 80" preserveAspectRatio="none" style="display:block;">
-                <defs>
-                  <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="rgba(55,147,255,.3)"/>
-                    <stop offset="100%" stop-color="rgba(55,147,255,0)"/>
-                  </linearGradient>
-                  <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="rgba(45,216,129,.25)"/>
-                    <stop offset="100%" stop-color="rgba(45,216,129,0)"/>
-                  </linearGradient>
-                </defs>
-                <!-- Grid lines -->
-                <line x1="0" y1="20" x2="440" y2="20" stroke="rgba(51,70,112,.35)" stroke-width="1"/>
-                <line x1="0" y1="40" x2="440" y2="40" stroke="rgba(51,70,112,.35)" stroke-width="1"/>
-                <line x1="0" y1="60" x2="440" y2="60" stroke="rgba(51,70,112,.35)" stroke-width="1"/>
-                <!-- Area 1 -->
-                <path d="M0,52 C30,48 60,42 100,38 C140,34 170,36 210,32 C250,28 290,24 330,22 C360,20 400,17 440,15 L440,80 L0,80 Z" fill="url(#g1)"/>
-                <path d="M0,52 C30,48 60,42 100,38 C140,34 170,36 210,32 C250,28 290,24 330,22 C360,20 400,17 440,15" fill="none" stroke="rgba(55,147,255,.85)" stroke-width="1.5"/>
-                <!-- Area 2 -->
-                <path d="M0,58 C30,55 60,50 100,47 C140,44 170,46 210,43 C250,40 290,36 330,33 C360,30 400,28 440,26 L440,80 L0,80 Z" fill="url(#g2)"/>
-                <path d="M0,58 C30,55 60,50 100,47 C140,44 170,46 210,43 C250,40 290,36 330,33 C360,30 400,28 440,26" fill="none" stroke="rgba(45,216,129,.7)" stroke-width="1.5"/>
-                <!-- Tooltip dot -->
-                <circle cx="330" cy="22" r="3" fill="var(--primary)"/>
-                <circle cx="330" cy="33" r="3" fill="var(--secondary)"/>
-              </svg>
+                <form class="space-y-4" onsubmit="event.preventDefault();">
+                    <div class="grid grid-cols-1 gap-4">
+                        <input type="text" placeholder="Nazwa firmy / Organizacja" class="form-input" required>
+                        <input type="email" placeholder="Email kontaktowy" class="form-input" required>
+                        <select class="form-input" required>
+                            <option value="" disabled selected>Temat rozmowy</option>
+                            <option value="audit">Bezpłatny Audyt Wizyjny</option>
+                            <option value="poc">Analiza wykonalności (PoC)</option>
+                            <option value="other">Współpraca / Partnerstwo</option>
+                        </select>
+                        <textarea placeholder="Opisz krótko swój proces lub wyzwanie wizyjne..." class="form-input resize-none" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-4 text-base shadow-xl uppercase">Wyślij Zapytanie</button>
+                </form>
             </div>
-
-            <!-- Events -->
-            <div class="dash-events">
-              <div class="dash-event">
-                <span class="ev-msg">✓ line-01 defect inspection passed — 1247 units OK</span>
-                <span class="ev-time">2s ago</span>
-              </div>
-              <div class="dash-event warn">
-                <span class="ev-msg">⚠ cam-03a response timeout — failover activated</span>
-                <span class="ev-time">38s ago</span>
-              </div>
-              <div class="dash-event info-e">
-                <span class="ev-msg">→ AI model retrained — accuracy improved +0.3%</span>
-                <span class="ev-time">4m ago</span>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ══════════════ LOGO STRIP ══════════════ -->
-<div class="logo-strip">
-  <div class="logo-strip-inner">
-    <span class="strip-label">Integrated with</span>
-    <div class="strip-logos">
-      <span class="strip-logo">Siemens</span>
-      <span class="strip-logo">ABB</span>
-      <span class="strip-logo">Rockwell</span>
-      <span class="strip-logo">Bosch</span>
-      <span class="strip-logo">Cognex</span>
-      <span class="strip-logo">FANUC</span>
-    </div>
-  </div>
-</div>
+    <footer class="bg-white py-12 border-t border-gray-100 text-center">
+        <span class="text-sm font-black text-gray-400 uppercase tracking-widest">&copy; 2026 Studio OPTINODE AI Systems. All Rights Reserved.</span>
+    </footer>
 
-<!-- ══════════════ AUTOPILOT SECTION ══════════════ -->
-<section class="section autopilot-section" id="autopilot">
-  <div class="section-inner">
-    <div class="autopilot-grid">
+    <script>
+        const lenis = new Lenis({ duration: 1.2, smooth: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger, Draggable);
 
-      <!-- Left: text + features -->
-      <div>
-        <span class="section-tag">AI-Powered</span>
-        <h2 class="section-h2">Observability on Autopilot</h2>
-        <p class="section-lead">
-          OptiNode continuously monitors every production line, camera feed, and model inference — surfacing anomalies before they become defects, and routing decisions without human delay.
-        </p>
-        <div class="autopilot-features">
-          <div class="ap-feat">
-            <div class="ap-feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-              </svg>
-            </div>
-            <div class="ap-feat-text">
-              <h4>Always-On Defect Detection</h4>
-              <p>Sub-5ms inference on every frame. No sampling, no blind spots — every unit inspected, every defect caught.</p>
-            </div>
-          </div>
-          <div class="ap-feat">
-            <div class="ap-feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-            </div>
-            <div class="ap-feat-text">
-              <h4>Self-Healing Pipelines</h4>
-              <p>Camera failures, network drops, and model drift are detected and resolved automatically — keeping uptime above 99.9%.</p>
-            </div>
-          </div>
-          <div class="ap-feat">
-            <div class="ap-feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-              </svg>
-            </div>
-            <div class="ap-feat-text">
-              <h4>Continuous Model Improvement</h4>
-              <p>Every inspection event feeds back into the model registry. Accuracy compounds week over week — automatically.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        // --- SYMULACJA CANVAS (Z POPRAWKAMI DETALI I REAKCJI) ---
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+        const countTotalEl = document.getElementById('count-total');
+        const countGoodEl = document.getElementById('count-good');
+        const countBadEl = document.getElementById('count-bad');
 
-      <!-- Right: panels -->
-      <div class="ap-panels">
+        let width, height;
+        let beltY, beltDepth, camX, camY, serverX, serverY, binX, flapPivotX;
 
-        <!-- Panel 1: Code/config panel -->
-        <div class="mini-panel">
-          <div class="mp-header">
-            <div class="mp-header-left">
-              <div class="mp-dots">
-                <div class="mp-dot dot-r"></div>
-                <div class="mp-dot dot-y"></div>
-                <div class="mp-dot dot-g"></div>
-              </div>
-              <span class="mp-title">pipeline.yaml — line-01</span>
-            </div>
-            <span class="mp-badge">● running</span>
-          </div>
-          <div class="mp-body">
-            <div class="code-line"><span class="kw">pipeline</span>:</div>
-            <div class="code-line">&nbsp;&nbsp;<span class="kw">name</span>: <span class="str">"line-01-inspection"</span></div>
-            <div class="code-line">&nbsp;&nbsp;<span class="kw">model</span>: <span class="str">"optinode/defect-v4.2"</span></div>
-            <div class="code-line">&nbsp;&nbsp;<span class="kw">threshold</span>: <span class="num">0.94</span></div>
-            <div class="code-line">&nbsp;&nbsp;<span class="kw">cameras</span>: [<span class="str">"cam-01a"</span>, <span class="str">"cam-01b"</span>]</div>
-            <div class="code-line">&nbsp;&nbsp;<span class="kw">actions</span>:</div>
-            <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;- <span class="kw">on_defect</span>: <span class="str">"reject_divert"</span></div>
-            <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;- <span class="kw">on_alert</span>: <span class="str">"notify_slack"</span></div>
-            <div class="code-line"><span class="cmt"># last updated 2 mins ago · auto-deployed</span></div>
-          </div>
-        </div>
+        function resize() {
+            const container = document.getElementById('sim-container');
+            width = canvas.width = container.offsetWidth;
+            height = canvas.height = container.offsetHeight;
+            beltDepth = 90; 
+            beltY = height - 180; 
+            let centerX = width / 2;
+            camX = centerX - 100; 
+            camY = beltY - 180; 
+            serverX = camX + 280; 
+            serverY = camY - 40;  
+            binX = camX + 160; 
+            flapPivotX = binX + 115; 
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-        <!-- Panel 2: Metrics panel -->
-        <div class="mini-panel">
-          <div class="mp-header">
-            <div class="mp-header-left">
-              <div class="mp-dots">
-                <div class="mp-dot dot-r"></div>
-                <div class="mp-dot dot-y"></div>
-                <div class="mp-dot dot-g"></div>
-              </div>
-              <span class="mp-title">model-metrics — last 1h</span>
-            </div>
-            <span class="mp-badge">✓ healthy</span>
-          </div>
-          <div class="mp-body">
-            <div class="mp-metrics">
-              <div class="mp-metric">
-                <div class="mp-metric-val g">99.8%</div>
-                <div class="mp-metric-lbl">Accuracy</div>
-              </div>
-              <div class="mp-metric">
-                <div class="mp-metric-val">4.1ms</div>
-                <div class="mp-metric-lbl">Latency</div>
-              </div>
-              <div class="mp-metric">
-                <div class="mp-metric-val">847</div>
-                <div class="mp-metric-lbl">ppm</div>
-              </div>
-              <div class="mp-metric">
-                <div class="mp-metric-val g">0</div>
-                <div class="mp-metric-lbl">Misses</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        let stats = { total: 0, good: 0, bad: 0 };
+        let dataBits = [];
+        let scanParticles = [];
+        let bottles = [];
+        let frameCounter = 0;
+        let spawnIndex = 0;
+        let beltOffset = 0;
+        let isFlapOpen = false;
+        let flapAngle = 0;
+        let flapTimer = 0;
+        let serverDataFill = 30; 
+        let currentFlashAlpha = 0;
+        let currentScanColor = '#0ea5e9';
+        let streakType = null; 
+        let streakCount = 0;
 
-      </div>
-    </div>
-  </div>
-</section>
+        function getCurvePoints() {
+            return { p0: {x: camX, y: camY - 70}, p1: {x: camX + (serverX - camX)/2, y: serverY - 60}, p2: {x: serverX, y: serverY - 5} };
+        }
 
-<!-- ══════════════ STATS ══════════════ -->
-<section class="stats-section" id="scale">
-  <div class="stats-inner">
-    <div class="stats-header">
-      <span class="section-tag" style="justify-content:center;display:block;">Built For Scale</span>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-num">62<span class="su"> PB</span></div>
-        <div class="stat-lbl">Data Processed</div>
-        <div class="stat-sub">across all deployments</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">5857<span class="su">+</span></div>
-        <div class="stat-lbl">Production Lines</div>
-        <div class="stat-sub">monitored globally</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">3784<span class="su">+</span></div>
-        <div class="stat-lbl">Models Deployed</div>
-        <div class="stat-sub">in active production</div>
-      </div>
-    </div>
-  </div>
-</section>
+        class ScanParticle {
+            constructor(startX, color) {
+                this.x = startX + (Math.random() * 20 - 10); this.y = beltY + 20; 
+                this.val = Math.random() > 0.5 ? "1" : "0"; this.speed = 14; 
+                this.opacity = 1; this.color = color; this.targetY = camY + 45; 
+            }
+            update() { this.y -= this.speed; if (this.y < this.targetY) this.opacity -= 0.4; }
+            draw() { if (this.opacity <= 0) return; ctx.save(); ctx.globalAlpha = Math.max(0, this.opacity); ctx.fillStyle = this.color; ctx.font = 'bold 16px monospace'; ctx.fillText(this.val, this.x, this.y); ctx.restore(); }
+        }
 
-<!-- ══════════════ PLATFORM TABS ══════════════ -->
-<section class="section platform-section" id="platform">
-  <div class="section-inner">
-    <div class="platform-head">
-      <span class="section-tag">Platform</span>
-      <h2 class="section-h2">Everything you need in one platform</h2>
-    </div>
+        class Bottle {
+            constructor(forcedDefect = null) {
+                this.x = -100; this.y = beltY + beltDepth / 2; this.w = 38; this.h = 90; this.speed = 4.2;
+                let defect = Math.random() < 0.35;
+                if (streakType === false && streakCount >= 3) defect = true;
+                else if (streakType === true && streakCount >= 2) defect = false;
+                if (forcedDefect !== null) this.isDefective = forcedDefect; else this.isDefective = defect;
+                if (this.isDefective === streakType) streakCount++; else { streakType = this.isDefective; streakCount = 1; }
+                this.isScanned = false; this.state = 0; this.vy = 0; this.rotation = 0; this.vRot = 0;
+            }
+            update() {
+                if (this.state === 0) {
+                    this.x += this.speed;
+                    if (!this.isScanned && this.x > camX - 10) {
+                        this.isScanned = true; stats.total++; currentFlashAlpha = 1.0;
+                        currentScanColor = this.isDefective ? '#ef4444' : '#0ea5e9';
+                        if (this.isDefective) stats.bad++; else stats.good++;
+                        countTotalEl.innerText = stats.total; countGoodEl.innerText = stats.good; countBadEl.innerText = stats.bad;
+                        for(let i=0; i<8; i++) { setTimeout(() => { scanParticles.push(new ScanParticle(camX, currentScanColor)); dataBits.push(new DataBit(this.isDefective)); }, i * 30); }
+                    }
+                    if (this.isDefective && this.x > flapPivotX - 135 && isFlapOpen) { this.state = 1; }
+                } else if (this.state === 1) {
+                    this.x += this.speed * 0.4; this.y += 4.5; if (this.y > beltY + beltDepth - 5) { this.state = 2; this.vy = 0; this.vRot = 0.02 + Math.random() * 0.01; }
+                } else if (this.state === 2) { this.vy += 0.6; this.y += this.vy; this.x += this.speed * 0.1; this.rotation += this.vRot; }
+            }
+            draw() {
+                ctx.save(); ctx.translate(this.x + this.w/2, this.y); ctx.rotate(this.rotation);
+                let dx = -this.w/2; let dy = -this.h;
+                let bodyGrad = ctx.createLinearGradient(dx, 0, dx + this.w, 0);
+                bodyGrad.addColorStop(0, 'rgba(180, 210, 230, 0.4)'); bodyGrad.addColorStop(0.2, 'rgba(255, 255, 255, 0.7)'); bodyGrad.addColorStop(1, 'rgba(120, 170, 200, 0.5)');
+                ctx.fillStyle = bodyGrad; ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.roundRect(dx, dy + 25, this.w, this.h - 25, 6); ctx.fill(); ctx.stroke();
+                
+                // SZYJA BUTELKI
+                ctx.fillStyle = bodyGrad;
+                ctx.beginPath();
+                ctx.moveTo(dx + 5, dy + 25);
+                ctx.quadraticCurveTo(dx + 5, dy + 15, dx + 12, dy + 15);
+                ctx.lineTo(dx + this.w - 12, dy + 15);
+                ctx.quadraticCurveTo(dx + this.w - 5, dy + 15, dx + this.w - 5, dy + 25);
+                ctx.fill();
 
-    <div class="tab-bar" id="tabBar">
-      <button class="tab-btn active" data-tab="detection">AI Detection</button>
-      <button class="tab-btn" data-tab="rca">Root Cause Analysis</button>
-      <button class="tab-btn" data-tab="monitoring">Process Monitoring</button>
-      <button class="tab-btn" data-tab="alerts">Alert Management</button>
-      <button class="tab-btn" data-tab="integrations">Integrations</button>
-    </div>
+                // Nakrętka
+                if (!this.isDefective) { ctx.fillStyle = '#0284c7'; ctx.beginPath(); ctx.roundRect(dx + 9, dy + 5, 20, 10, 2); ctx.fill(); }
+                else { ctx.save(); ctx.translate(dx + 19, dy + 10); ctx.rotate(-0.25); ctx.fillStyle = '#dc2626'; ctx.beginPath(); ctx.roundRect(-10, -5, 20, 10, 2); ctx.fill(); ctx.restore(); }
+                ctx.restore();
+            }
+        }
 
-    <div class="platform-content">
-      <!-- Feature list -->
-      <div class="platform-feat-list" id="featList">
-        <div class="plat-feat active">
-          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <div class="plat-feat-body">
-            <strong>Real-time defect detection</strong>
-            <span>Sub-5ms inference on every camera frame with zero sampling loss.</span>
-          </div>
-        </div>
-        <div class="plat-feat">
-          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <div class="plat-feat-body">
-            <strong>Multi-class classification</strong>
-            <span>Detect scratch, dent, contamination, mis-assembly and 50+ defect types out of the box.</span>
-          </div>
-        </div>
-        <div class="plat-feat">
-          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <div class="plat-feat-body">
-            <strong>Confidence scoring &amp; tracing</strong>
-            <span>Every decision is logged with confidence metrics and full frame traceability.</span>
-          </div>
-        </div>
-        <div class="plat-feat">
-          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <div class="plat-feat-body">
-            <strong>Automated model retraining</strong>
-            <span>Active learning pipeline continuously improves accuracy using production feedback.</span>
-          </div>
-        </div>
-        <div class="plat-feat">
-          <svg class="plat-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <div class="plat-feat-body">
-            <strong>Edge &amp; cloud hybrid</strong>
-            <span>Process locally for latency, sync globally for analytics and model distribution.</span>
-          </div>
-        </div>
-      </div>
+        class DataBit {
+            constructor(isDefective) { this.t = 0; this.speed = 0.08 + Math.random() * 0.02; this.val = Math.random() > 0.5 ? "1" : "0"; this.isDefective = isDefective; }
+            update() { this.t += this.speed; if (this.t >= 1) { serverDataFill = Math.min(serverDataFill + 1.2, 40); if (this.isDefective) { isFlapOpen = true; flapTimer = 45; } } }
+            draw() {
+                if (this.t >= 1) return;
+                let pts = getCurvePoints();
+                let cx = Math.pow(1-this.t, 2)*pts.p0.x + 2*(1-this.t)*this.t*pts.p1.x + Math.pow(this.t, 2)*pts.p2.x;
+                let cy = Math.pow(1-this.t, 2)*pts.p0.y + 2*(1-this.t)*this.t*pts.p1.y + Math.pow(this.t, 2)*pts.p2.y;
+                ctx.fillStyle = this.isDefective ? '#ef4444' : '#0ea5e9'; ctx.font = 'bold 14px monospace'; ctx.fillText(this.val, cx, cy);
+            }
+        }
 
-      <!-- Panel -->
-      <div class="plat-panel">
-        <div class="plat-panel-header">
-          <span class="plat-panel-title">optinode://detection/events — live stream</span>
-          <div class="dash-live"><span class="dash-live-dot"></span> Streaming</div>
-        </div>
-        <div class="plat-panel-body">
-          <table class="plat-table">
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Line</th>
-                <th>Unit ID</th>
-                <th>Defect Type</th>
-                <th>Confidence</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>09:47:32</td>
-                <td>line-01</td>
-                <td>#UN-8842</td>
-                <td>—</td>
-                <td>99.9%</td>
-                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
-              </tr>
-              <tr>
-                <td>09:47:31</td>
-                <td>line-02</td>
-                <td>#UN-8841</td>
-                <td>scratch</td>
-                <td>97.2%</td>
-                <td><span class="status-pill status-err"><span class="status-dot"></span>Reject</span></td>
-              </tr>
-              <tr>
-                <td>09:47:30</td>
-                <td>line-01</td>
-                <td>#UN-8840</td>
-                <td>—</td>
-                <td>99.7%</td>
-                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
-              </tr>
-              <tr>
-                <td>09:47:29</td>
-                <td>line-04</td>
-                <td>#UN-8839</td>
-                <td>dent</td>
-                <td>94.1%</td>
-                <td><span class="status-pill status-warn"><span class="status-dot"></span>Review</span></td>
-              </tr>
-              <tr>
-                <td>09:47:28</td>
-                <td>line-01</td>
-                <td>#UN-8838</td>
-                <td>—</td>
-                <td>99.8%</td>
-                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
-              </tr>
-              <tr>
-                <td>09:47:27</td>
-                <td>line-02</td>
-                <td>#UN-8837</td>
-                <td>—</td>
-                <td>99.6%</td>
-                <td><span class="status-pill status-ok"><span class="status-dot"></span>Pass</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+        function drawConnections() {
+            let pts = getCurvePoints();
+            ctx.beginPath(); ctx.moveTo(pts.p0.x, pts.p0.y); ctx.quadraticCurveTo(pts.p1.x, pts.p1.y, pts.p2.x, pts.p2.y); 
+            ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 6; ctx.stroke();
+            ctx.strokeStyle = '#3498db'; ctx.lineWidth = 1.5; ctx.setLineDash([8, 8]); ctx.stroke(); ctx.setLineDash([]);
+            ctx.beginPath(); ctx.moveTo(serverX + 10, serverY + 22); ctx.lineTo(serverX + 10, beltY + beltDepth + 18); ctx.lineTo(flapPivotX, beltY + beltDepth + 18); ctx.lineTo(flapPivotX, beltY + beltDepth + 2); 
+            ctx.strokeStyle = '#f97316'; ctx.lineWidth = 3; ctx.stroke();
+        }
 
-<!-- ══════════════ PRICING ══════════════ -->
-<section class="pricing-section" id="pricing">
-  <div class="section-inner">
-    <div class="pricing-head">
-      <span class="section-tag" style="justify-content:center;display:block;">Pricing</span>
-      <h2 class="section-h2" style="text-align:center;">Simple Predictable Pricing</h2>
-      <p class="section-lead" style="text-align:center;margin:0 auto;max-width:480px;">
-        Start free, scale as you grow. No surprise fees, no per-seat lock-in.
-      </p>
-    </div>
+        function drawCloudAndServer() {
+            ctx.save(); ctx.translate(serverX, serverY);
+            ctx.beginPath(); ctx.moveTo(-25, 20); ctx.bezierCurveTo(-65, 20, -65, -15, -25, -15); ctx.bezierCurveTo(-15, -55, 35, -55, 45, -20); ctx.bezierCurveTo(85, -20, 85, 20, 45, 20); ctx.closePath();
+            ctx.fillStyle = '#cbd5e1'; ctx.fill();
+            let sW = 32, sH = 48; ctx.fillStyle = '#334155'; ctx.fillRect(10 - sW/2, -12 - sH/2, sW, sH);
+            if (serverDataFill > 25) serverDataFill -= 0.15;
+            ctx.fillStyle = '#0f172e'; ctx.fillRect(10 - sW/2 + 4, -12 - sH/2 + 4, sW - 8, sH - 8);
+            let fillH = (serverDataFill / 100) * (sH - 8);
+            ctx.fillStyle = '#0ea5e9'; ctx.fillRect(10 - sW/2 + 4, -12 + sH/2 - 4 - fillH, sW - 8, fillH);
+            ctx.restore();
+        }
 
-    <div class="pricing-grid">
-      <!-- FREE -->
-      <div class="pricing-card">
-        <div>
-          <div class="pricing-tier">Free</div>
-          <div class="pricing-amount" style="margin-top:.625rem;">$0</div>
-        </div>
-        <p class="pricing-desc">For individuals and small teams getting started with AI-powered inspection.</p>
-        <div class="pricing-divider"></div>
-        <div class="pricing-feats">
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            1 production line
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Up to 3 cameras
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            100K inspections / month
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Community support
-          </div>
-          <div class="p-feat dimmed">
-            <svg class="p-feat-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            Custom models
-          </div>
-          <div class="p-feat dimmed">
-            <svg class="p-feat-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            SLA / uptime guarantee
-          </div>
-        </div>
-        <div>
-          <button class="btn-full btn-full-ghost">Get Started Free</button>
-          <div class="pricing-note" style="margin-top:.75rem;">No credit card required</div>
-        </div>
-      </div>
+        function drawConveyor() {
+            ctx.fillStyle = '#475569';
+            for(let i=50; i<width; i+=300) { ctx.fillRect(i, beltY + beltDepth, 15, height - (beltY + beltDepth)); }
+            let beltGrad = ctx.createLinearGradient(0, beltY, 0, beltY + beltDepth);
+            beltGrad.addColorStop(0, '#334155'); beltGrad.addColorStop(1, '#0f172a'); 
+            ctx.fillStyle = beltGrad; ctx.fillRect(0, beltY, width, beltDepth); 
+            ctx.strokeStyle = '#020617'; ctx.lineWidth = 3;
+            for(let i = -100; i < width + 100; i+= 50) { let x = i + beltOffset; ctx.beginPath(); ctx.moveTo(x, beltY); ctx.lineTo(x, beltY + beltDepth); ctx.stroke(); }
+            // Zamknięta konstrukcja taśmociągu
+            ctx.fillStyle = '#cbd5e1'; ctx.fillRect(0, beltY - 8, width, 8); 
+            ctx.fillStyle = '#cbd5e1'; ctx.fillRect(0, beltY + beltDepth, width, 8); 
+        }
 
-      <!-- TEAM -->
-      <div class="pricing-card featured">
-        <div>
-          <div class="pricing-tier" style="color:var(--primary);">Team</div>
-          <div class="pricing-amount" style="margin-top:.625rem;">$80<span class="period"> / mo</span></div>
-        </div>
-        <p class="pricing-desc">For growing operations teams that need reliability, advanced models, and support.</p>
-        <div class="pricing-divider"></div>
-        <div class="pricing-feats">
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Up to 5 production lines
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Unlimited cameras
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            5M inspections / month
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Custom defect models
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Priority email support
-          </div>
-          <div class="p-feat dimmed">
-            <svg class="p-feat-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            Dedicated SLA
-          </div>
-        </div>
-        <div>
-          <button class="btn-full btn-full-primary">Start 14-day Trial</button>
-          <div class="pricing-note" style="margin-top:.75rem;">No credit card required</div>
-        </div>
-      </div>
+        function drawCamera() {
+            ctx.save(); ctx.translate(camX, camY);
+            
+            // STOŻEK ŚWIATŁA Z STYKU SOCZEWKI Z OBUDOWĄ (WĘŻSZY)
+            let lightBottom = (beltY + beltDepth/2) - camY;
+            let lightGrad = ctx.createLinearGradient(0, 50, 0, lightBottom);
+            lightGrad.addColorStop(0, 'rgba(255, 255, 255, 0.45)'); lightGrad.addColorStop(1, 'rgba(100, 200, 255, 0)');
+            ctx.fillStyle = lightGrad;
+            ctx.beginPath(); ctx.moveTo(-12, 60); ctx.lineTo(12, 60); // Start dokładnie ze środka soczewki
+            ctx.lineTo(45, lightBottom); ctx.lineTo(-45, lightBottom); ctx.fill();
+            
+            // Obudowa górna
+            ctx.fillStyle = '#0f172a'; ctx.fillRect(-10, -70, 20, 15); 
+            ctx.fillStyle = '#2c3e50'; ctx.fillRect(-30, -55, 60, 85); 
+            ctx.fillStyle = '#94a3b8'; ctx.fillRect(-22, -55, 44, 85);
+            
+            // OBIEKTYW 3D (WYSOKA JAKOŚĆ)
+            let lensGrad = ctx.createLinearGradient(-25, 0, 25, 0);
+            lensGrad.addColorStop(0, '#050505'); lensGrad.addColorStop(0.5, '#5a626e'); lensGrad.addColorStop(1, '#050505');
+            ctx.fillStyle = lensGrad;
+            ctx.fillRect(-25, 30, 50, 30); 
+            
+            // Gęste prążkowanie obiektywu
+            ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 1;
+            for(let i = -20; i <= 20; i += 3) { ctx.beginPath(); ctx.moveTo(i, 30); ctx.lineTo(i, 60); ctx.stroke(); }
 
-      <!-- ENTERPRISE -->
-      <div class="pricing-card">
-        <div>
-          <div class="pricing-tier">Enterprise</div>
-          <div class="pricing-amount custom" style="margin-top:.625rem;">Let's Talk</div>
-        </div>
-        <p class="pricing-desc">For large-scale operations with custom compliance, SLA, and dedicated engineering support.</p>
-        <div class="pricing-divider"></div>
-        <div class="pricing-feats">
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Unlimited lines &amp; cameras
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Unlimited inspections
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Dedicated ML engineering
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            99.9% uptime SLA
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            On-premise deployment
-          </div>
-          <div class="p-feat">
-            <svg class="p-feat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            21 CFR Part 11 compliance
-          </div>
-        </div>
-        <div>
-          <button class="btn-full btn-full-ghost">Book a Demo</button>
-          <div class="pricing-note" style="margin-top:.75rem;">Response within 24 hours</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+            // Soczewka (Dysk centralny)
+            ctx.fillStyle = '#5fb6e5'; ctx.beginPath(); ctx.ellipse(0, 60, 14, 4, 0, 0, Math.PI*2); ctx.fill();
 
-<!-- ══════════════ FAQ ══════════════ -->
-<section class="faq-section" id="faq">
-  <div class="section-inner">
-    <div class="faq-layout">
+            if (currentFlashAlpha > 0) { currentFlashAlpha -= 0.05; ctx.fillStyle = currentScanColor; ctx.globalAlpha = currentFlashAlpha * 0.5; ctx.beginPath(); ctx.ellipse(0, 60, 22, 5, 0, 0, Math.PI*2); ctx.fill(); ctx.globalAlpha = 1.0; }
+            ctx.restore();
+        }
 
-      <!-- Left -->
-      <div class="faq-left">
-        <span class="section-tag">FAQs</span>
-        <h2 class="section-h2">Questions?<br/>We have answers.</h2>
-        <p class="section-lead" style="max-width:none;margin-top:1rem;">
-          Can't find what you're looking for? <a href="#" style="color:var(--primary);">Talk to our team →</a>
-        </p>
-      </div>
+        function drawBin() {
+            let bX = binX; let bY = beltY + beltDepth + 15; let bW = 120; 
+            let bH = height - bY; 
+            ctx.fillStyle = '#0f172a'; ctx.fillRect(bX - 5, bY, bW + 10, 30);
+            ctx.fillStyle = '#94a3b8'; ctx.fillRect(bX, bY + 30, bW, bH - 30); // Poprawka: usunięcie białego elementu na dole
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 16px Segoe UI'; ctx.textAlign = 'center'; ctx.fillText('ODPADY', bX + bW/2, bY + 85); ctx.textAlign = 'left';
+        }
 
-      <!-- Right: accordion -->
-      <div class="faq-list">
+        function drawFlap() {
+            let pivotY = beltY + beltDepth + 4;
+            if (flapTimer > 0) flapTimer--; else isFlapOpen = false;
+            // BŁYSKAWICZNE ZAMYKANIE (Szybsze o 50%)
+            let speed = isFlapOpen ? 0.55 : 0.75;
+            flapAngle = isFlapOpen ? Math.min(flapAngle + speed, Math.PI / 4.2) : Math.max(flapAngle - speed, 0);
+            ctx.save(); ctx.translate(flapPivotX, pivotY); ctx.rotate(flapAngle);
+            ctx.fillStyle = '#f97316'; ctx.beginPath(); ctx.roundRect(-140, -6, 140, 12, 6); ctx.fill(); ctx.restore();
+            ctx.fillStyle = isFlapOpen ? '#ef4444' : '#22c55e'; ctx.beginPath(); ctx.arc(flapPivotX, pivotY, 3, 0, Math.PI*2); ctx.fill();
+        }
 
-        <div class="faq-item open">
-          <button class="faq-q">
-            How does OptiNode detect defects without pre-labelled training data?
-            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-a">
-            OptiNode ships with a library of 50+ pre-trained defect detection models covering common defect categories across industries. For edge cases, our active learning pipeline automatically selects and labels high-value samples from your production stream — so your model improves continuously without manual annotation effort.
-          </div>
-        </div>
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            drawConnections(); drawCloudAndServer(); drawConveyor();
+            if (frameCounter % 50 === 0) {
+                let forced = (spawnIndex === 0) ? false : (spawnIndex === 1 ? true : null);
+                bottles.push(new Bottle(forced)); spawnIndex++;
+            }
+            for (let i = bottles.length - 1; i >= 0; i--) { bottles[i].update(); bottles[i].draw(); if (bottles[i].x > width + 100 || bottles[i].y > height + 200) bottles.splice(i, 1); }
+            drawBin(); drawFlap(); drawCamera();
+            for (let i = scanParticles.length - 1; i >= 0; i--) { scanParticles[i].update(); scanParticles[i].draw(); if (scanParticles[i].opacity <= 0) scanParticles.splice(i, 1); }
+            for (let i = dataBits.length - 1; i >= 0; i--) { dataBits[i].update(); dataBits[i].draw(); if (dataBits[i].t >= 1) dataBits.splice(i, 1); }
+            beltOffset = (beltOffset + 4.2) % 50; frameCounter++;
+            requestAnimationFrame(animate);
+        }
+        animate();
 
-        <div class="faq-item">
-          <button class="faq-q">
-            What cameras and hardware does OptiNode support?
-            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-a">
-            OptiNode is hardware-agnostic. We support GigE Vision, USB3 Vision, MIPI CSI-2, and most IP camera protocols via RTSP. Pre-validated integrations exist for Basler, IDS, Cognex, and Allied Vision cameras. The edge node runs on NVIDIA Jetson, standard x86 with GPU, or cloud VMs.
-          </div>
-        </div>
+        // --- POZOSTAŁA LOGIKA OPTINODE ---
+        const pCanvas = document.getElementById('particles-canvas');
+        const pCtx = pCanvas.getContext('2d');
+        let pw, ph, pList;
+        function initP() { pw = pCanvas.width = window.innerWidth; ph = pCanvas.height = window.innerHeight; pList = []; for (let i = 0; i < 40; i++) { pList.push({ x: Math.random() * pw, y: Math.random() * ph, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3 }); } }
+        function animP() { pCtx.clearRect(0, 0, pw, ph); pCtx.fillStyle = 'rgba(29, 43, 79, 0.3)'; pList.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > pw) p.vx *= -1; if (p.y < 0 || p.y > ph) p.vy *= -1; pCtx.beginPath(); pCtx.arc(p.x, p.y, 2, 0, Math.PI * 2); pCtx.fill(); }); requestAnimationFrame(animP); }
+        initP(); animP();
 
-        <div class="faq-item">
-          <button class="faq-q">
-            How long does deployment take?
-            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-a">
-            Most customers are running their first inspection pipeline within 2–4 hours of signing up, using a pre-trained model. Full production deployment with custom model tuning typically takes 1–3 weeks, depending on the number of defect classes and available hardware.
-          </div>
-        </div>
+        const tabs = document.querySelectorAll('.detection-label');
+        tabs.forEach(tab => { tab.addEventListener('click', () => { tabs.forEach(t => t.classList.remove('active')); tab.classList.add('active'); document.getElementById('v-label').innerText = `> MODULE: ${tab.innerText.split('.')[1].trim().toUpperCase().replace(/ /g, '_')}`; gsap.fromTo("#visualizer", { opacity: 0.3 }, { opacity: 1, duration: 0.5 }); }); });
 
-        <div class="faq-item">
-          <button class="faq-q">
-            Can OptiNode integrate with my existing SCADA, MES, or ERP?
-            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-a">
-            Yes. OptiNode exposes a REST API, MQTT broker, and OPC-UA server out of the box. Pre-built connectors exist for Siemens TIA Portal, Rockwell FactoryTalk, SAP MES, and most major SCADA platforms. Enterprise customers receive a dedicated integration engineer during onboarding.
-          </div>
-        </div>
+        const nodeEls = [document.getElementById('node1'), document.getElementById('node2'), document.getElementById('node3'), document.getElementById('node4')];
+        function setPos() { const isMob = window.innerWidth < 768; const pos = isMob ? [{ left: "50%", xPercent: -50, top: "10px" }, { left: "50%", xPercent: -50, top: "180px" }, { left: "50%", xPercent: -50, top: "350px" }, { left: "50%", xPercent: -50, top: "520px" }] : [{ left: "4%", top: "4%" }, { left: "28%", top: "50%" }, { left: "52%", top: "4%" }, { left: "76%", top: "50%" }]; nodeEls.forEach((node, i) => { if (!node.hasAttribute('data-dragged')) gsap.set(node, pos[i]); }); }
+        setPos();
 
-        <div class="faq-item">
-          <button class="faq-q">
-            What data does OptiNode collect and where is it stored?
-            <svg class="faq-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <div class="faq-a">
-            By default, OptiNode processes video frames on your edge hardware and only sends metadata (defect class, confidence, timestamp, unit ID) to the cloud dashboard. Raw frames are never stored by default. Enterprise plans support fully air-gapped on-premise deployments where no data leaves your facility.
-          </div>
-        </div>
+        function getPorts(rect) { return [{ id: 'T', x: rect.left + rect.width / 2, y: rect.top, dx: 0, dy: -1 }, { id: 'B', x: rect.left + rect.width / 2, y: rect.bottom, dx: 0, dy: 1 }, { id: 'L', x: rect.left, y: rect.top + rect.height / 2, dx: -1, dy: 0 }, { id: 'R', x: rect.right, y: rect.top + rect.height / 2, dx: 1, dy: 0 }]; }
+        function updateFlow() {
+            const svg = document.getElementById('flow-svg'); const rect = svg.getBoundingClientRect();
+            const conns = [{ from: 0, to: 1, pId: 'path1', aId: 'anim1', d1: 'dot1', d2: 'dot2' }, { from: 1, to: 2, pId: 'path2', aId: 'anim2', d1: 'dot3', d2: 'dot4' }, { from: 2, to: 3, pId: 'path3', aId: 'anim3', d1: 'dot5', d2: 'dot6' }];
+            conns.forEach((c) => {
+                const r1 = nodeEls[c.from].getBoundingClientRect(); const r2 = nodeEls[c.to].getBoundingClientRect();
+                const p1s = getPorts(r1), p2s = getPorts(r2);
+                let bP1, bP2, minS = Infinity;
+                p1s.forEach(p1 => { p2s.forEach(p2 => { let d = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y); if (p1.id === p2.id) d += 300; if (d < minS) { minS = d; bP1 = p1; bP2 = p2; } });});
+                const x1 = bP1.x - rect.left, y1 = bP1.y - rect.top, x2 = bP2.x - rect.left, y2 = bP2.y - rect.top;
+                const d1 = document.getElementById(c.d1), d2 = document.getElementById(c.d2);
+                d1.style.display = d2.style.display = "block"; d1.style.left = `${x1-5}px`; d1.style.top = `${y1-5}px`; d2.style.left = `${x2-5}px`; d2.style.top = `${y2-5}px`;
+                let dStr = `M ${x1} ${y1} `;
+                if (bP1.dx !== 0 && bP2.dx !== 0) { const mX = (x1 + x2) / 2; dStr += `L ${mX} ${y1} L ${mX} ${y2} L ${x2} ${y2}`; }
+                else if (bP1.dy !== 0 && bP2.dy !== 0) { const mY = (y1 + y2) / 2; dStr += `L ${x1} ${mY} L ${mY} ${mY} L ${x2} ${y2}`; }
+                else { if (bP1.dx !== 0) dStr += `L ${x2} ${y1} L ${x2} ${y2}`; else dStr += `L ${x1} ${y2} L ${x2} ${y2}`; }
+                document.getElementById(c.pId).setAttribute('d', dStr); document.getElementById(c.aId).setAttribute('path', dStr);
+            });
+        }
 
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ FOOTER ══════════════ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <img src="brand_assets/OptiNode_Logo.png" alt="OptiNode" />
-        <p>AI-native machine vision for industrial teams. From Vision to Decision.</p>
-        <div class="footer-socials">
-          <a href="#" class="footer-social">in</a>
-          <a href="#" class="footer-social">tw</a>
-          <a href="#" class="footer-social">gh</a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h5>Product</h5>
-        <ul>
-          <li><a href="#">AI Detection</a></li>
-          <li><a href="#">Root Cause Analysis</a></li>
-          <li><a href="#">Process Monitoring</a></li>
-          <li><a href="#">Alert Management</a></li>
-          <li><a href="#">Integrations</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Resources</h5>
-        <ul>
-          <li><a href="#">Documentation</a></li>
-          <li><a href="#">API Reference</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Changelog</a></li>
-          <li><a href="#">Status</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Partners</a></li>
-          <li><a href="#">Legal</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2025 OptiNode Ltd. All rights reserved.</span>
-      <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Settings</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- ══════════════ SCRIPTS ══════════════ -->
-<script>
-  // FAQ accordion
-  document.querySelectorAll('.faq-q').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
-      const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!wasOpen) item.classList.add('open');
-    });
-  });
-
-  // Tab switching
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
-  // Ensure logo fallback on dark bg
-  document.querySelectorAll('.nav-logo img, .footer-brand img').forEach(img => {
-    img.onerror = () => {
-      img.style.display = 'none';
-      const span = document.createElement('span');
-      span.textContent = 'OPTINODE';
-      span.style.cssText = 'font-family:Lexend,Inter,sans-serif;font-weight:700;font-size:1rem;letter-spacing:.05em;color:var(--text-light);';
-      img.parentElement.appendChild(span);
-    };
-  });
-</script>
-
+        Draggable.create(".node-box", { bounds: "#proces-container", onDrag: function() { this.target.setAttribute('data-dragged', 'true'); updateFlow(); }, inertia: true, onPress: () => gsap.to(this.target, { scale: 1.02, duration: 0.1 }), onRelease: () => gsap.to(this.target, { scale: 1, duration: 0.2 }) });
+        window.addEventListener('load', () => { updateFlow(); setTimeout(updateFlow, 500); });
+        window.addEventListener('resize', () => { setPos(); updateFlow(); initP(); resize(); });
+        gsap.utils.toArray('.anim-fade-up').forEach(el => { gsap.fromTo(el, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, scrollTrigger: { trigger: el, start: "top 95%" }}); });
+    </script>
 </body>
 </html>
